@@ -10568,6 +10568,33 @@ return jQuery;
  var courseData = []; // contains the raw data for the courses
 
  var styleIndex = 0;
+ var Styles_ = [
+    new Style( 2, 79, 57 ),
+    new Style( 108, 61, 54 ),
+    new Style( 197, 56, 56 ),
+    new Style( 295, 67, 63 ),
+    new Style( 40, 64, 58 ),
+    new Style( 150, 50, 52 ),
+    new Style( 271, 52, 70 ),
+    new Style( 18, 76, 56 ),
+    new Style( 221, 63, 65 ),
+    new Style( 75, 53, 47 ),
+    new Style( 176, 61, 47 ),
+    new Style( 47, 80, 53 ),
+    new Style( 352, 80, 64 ),
+    new Style( 113, 40, 45 ),
+    new Style( 188, 70, 54 ),
+    new Style( 96, 80, 47 ),
+    new Style( 330, 71, 65 ),
+    new Style( 31, 70, 52 ),
+    new Style( 216, 51, 65 ),
+    new Style( 250, 79, 71 )
+ ];
+
+
+
+
+
 
 
  /*
@@ -10599,6 +10626,9 @@ return jQuery;
     courseObj.$div = AddCourseElement( courseTitle, courseObj.style );
     courseObj.classes_ = AddClasses( courseText_, courseObj.$div, activeClassNum );
 
+    courseObj.$div.data( "course", courseObj );
+    console.log( courseObj.classes_ );
+
 
 
  }
@@ -10610,32 +10640,33 @@ return jQuery;
 
     for ( var i = 0; i < courseTextLen; i++ )
     {
-        classes_.push( AddClass( courseText_[ i ], $courseDiv , ( i === activeClassNum ) ) );
+        classes_.push( AddClass( courseText_[ i ], $courseDiv, ( i === activeClassNum ) ) );
     }
 
     return classes_;
  }
 
- function AddClass( courseText, $courseDiv , isActive )
+ function AddClass( courseText, $courseDiv, isActive )
  {
     var classObj = new Class();
     var i;
+    var stringTempArr = [];
 
     // try
     // {
 
     // sect number //////////////////////////////////////////////////////////////////////////////
 
-    classTemp.sect = courseText[ i ].match( /\d{4}/ )[ 0 ]; // pull sect number
+    classObj.sect = courseText.match( /\d{4}/ )[ 0 ]; // pull sect number
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove sect number
-
-
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove sect number
 
 
-    var stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
 
-    //courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/ , "" ); // remove up to first tab
+
+    var stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
+
+    //courseText = courseText.replace( /.*?(>|\t)/ , "" ); // remove up to first tab
 
     stringTemp = stringTemp.replace( /Th/g, "R" ); // replace Th with R
 
@@ -10658,58 +10689,58 @@ return jQuery;
 
     // Days of the week //////////////////////////////////////////////////////////////////////////
 
-    loop1: for ( i = 0 ; j < sessionLength; j++ ) // for number of class sessions create session object
+    loop1: for ( i = 0; i < sessionLength; i++ ) // for number of class sessions create session object
         {
-            var sessionTemp = new Session(); // create new session object
-            classTemp.sessions.push( sessionTemp ); // push session object into class.sessions array
+            var sessionObj = new Session(); // create new session object
+            classObj.sessions_.push( sessionObj ); // push session object into class.sessions array
 
 
             var charTemp = ""; // temp chracter for parsing days of the week
 
             while ( true ) //  parses the days of the week
             {
-                charTemp = stringTempArr[ j ].charAt( 0 ); // get first character of stringTemp
+                charTemp = stringTempArr[ i ].charAt( 0 ); // get first character of stringTemp
 
                 switch ( charTemp.toUpperCase() )
                 // assign values to days array, 1 = true
                 {
                     case "M":
-                        sessionTemp.days[ 0 ] = 1;
+                        sessionObj.days[ 0 ] = 1;
                         break;
 
                     case "T":
-                        sessionTemp.days[ 1 ] = 1;
+                        sessionObj.days[ 1 ] = 1;
                         break;
 
                     case "W":
-                        sessionTemp.days[ 2 ] = 1;
+                        sessionObj.days[ 2 ] = 1;
                         break;
 
                     case "R":
-                        sessionTemp.days[ 3 ] = 1;
+                        sessionObj.days[ 3 ] = 1;
                         break;
 
                     case "F":
-                        sessionTemp.days[ 4 ] = 1;
+                        sessionObj.days[ 4 ] = 1;
                         break;
 
                     case "S":
-                        sessionTemp.days[ 5 ] = 1;
-                        isSaturday = true;
+                        sessionObj.days[ 5 ] = 1;
+                        //isSaturday = true;
                         break;
 
                     case "N":
-                        sessionTemp.days[ 6 ] = 1;
-                        isSunday = true;
+                        sessionObj.days[ 6 ] = 1;
+                        //isSunday = true;
                         break;
                 }
 
-                if ( stringTempArr[ j ].length == 1 ) // break both loops
+                if ( stringTempArr[ i ].length == 1 ) // break both loops
                 {
                     break;
                 }
 
-                stringTempArr[ j ] = stringTempArr[ j ].substring( 1, stringTempArr[ j ].length ); // remove first character from stringTemp
+                stringTempArr[ i ] = stringTempArr[ i ].substring( 1, stringTempArr[ i ].length ); // remove first character from stringTemp
 
             }
         }
@@ -10717,9 +10748,9 @@ return jQuery;
 
 
 
-    stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
+    stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove days
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove days
 
     stringTempArr.splice( 0, stringTempArr.length ); // clear array
 
@@ -10732,17 +10763,17 @@ return jQuery;
 
     // days as string /////////////////////////////////////////////////////////////////
 
-    for ( i = 0 ; j < sessionLength; j++ ) // for number of sessions parse instructor name
+    for ( i = 0; i < sessionLength; i++ ) // for number of sessions parse instructor name
     {
-        classTemp.sessions[ j ].daysS = stringTempArr[ j ];
+        classObj.sessions_[ i ].daysS = stringTempArr[ i ];
     }
 
 
 
 
-    stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until next tab
+    stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until next tab
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove up to first tab
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove up to first tab
 
     stringTempArr.splice( 0, stringTempArr.length ); // clear array
 
@@ -10754,14 +10785,14 @@ return jQuery;
 
     // Times /////////////////////////////////////////////////////////////////////////
 
-    for ( i = 0 ; j < sessionLength; j++ ) // for number of sessions parse class times
+    for ( i = 0; i < sessionLength; i++ ) // for number of sessions parse class times
     {
         // try
         // {
         var hour, min, ampm;
 
-        stringTemp = stringTempArr[ j ];
-        classTemp.sessions[ j ].timeS = stringTemp;
+        stringTemp = stringTempArr[ i ];
+        classObj.sessions_[ i ].timeS = stringTemp;
 
         hour = Number( stringTemp.match( /\d\d?/ )[ 0 ] ); // parses start hour
 
@@ -10790,7 +10821,7 @@ return jQuery;
             }
         }
 
-        classTemp.sessions[ j ].timeStart = hour * 60 + min - 360; // assign start time in minutes relative to 7AM
+        classObj.sessions_[ i ].timeStart = hour * 60 + min - 360; // assign start time in minutes relative to 7AM
 
 
         // same but with end times ///////////////////////////////////
@@ -10820,7 +10851,7 @@ return jQuery;
             }
         }
 
-        classTemp.sessions[ j ].timeEnd = hour * 60 + min - 360; // assign end time in minutes relative to 7AM
+        classObj.sessions_[ i ].timeEnd = hour * 60 + min - 360; // assign end time in minutes relative to 7AM
 
         // }
         // catch ( err )
@@ -10832,9 +10863,9 @@ return jQuery;
 
 
 
-    stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
+    stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove instructor
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove instructor
 
     stringTempArr.splice( 0, stringTempArr.length ); // clear array
 
@@ -10846,9 +10877,9 @@ return jQuery;
 
     // instructor /////////////////////////////////////////////////////////////////
 
-    for ( i = 0 ; j < sessionLength; j++ ) // for number of sessions parse instructor name
+    for ( i = 0; i < sessionLength; i++ ) // for number of sessions_ parse instructor name
     {
-        classTemp.sessions[ j ].instructor = stringTempArr[ j ]; // assign instructor to class
+        classObj.sessions_[ i ].instructor = stringTempArr[ i ]; // assign instructor to class
     }
 
 
@@ -10856,9 +10887,9 @@ return jQuery;
 
     // try
     // {
-    stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
+    stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove room number
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove room number
 
     stringTempArr.splice( 0, stringTempArr.length ); // clear array
 
@@ -10871,9 +10902,9 @@ return jQuery;
 
     // room number /////////////////////////////////////////////////////////
 
-    for ( i = 0 ; j < sessionLength; j++ )
+    for ( i = 0; i < sessionLength; i++ )
     {
-        classTemp.sessions[ j ].location = stringTempArr[ j ]; // assing room number to classTemp
+        classObj.sessions_[ i ].location = stringTempArr[ i ]; // assing room number to classObj
     }
     // }
     // catch ( err ) // if room number missing
@@ -10885,16 +10916,16 @@ return jQuery;
 
     // try
     // {
-    stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
+    stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove units
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove units
 
 
 
 
     // units ////////////////////////////////////////////////////////////////////////
 
-    classTemp.units = stringTemp.substring( 0, stringTemp.length - 1 ); // parses units and assing to class    
+    classObj.units = stringTemp.substring( 0, stringTemp.length - 1 ); // parses units and assing to class    
     // }
     // catch ( err ) // if units missing
     // {
@@ -10906,15 +10937,15 @@ return jQuery;
 
     // try
     // {
-    stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
+    stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove status
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove status
 
 
 
     // status ///////////////////////////////////////////////////////////////////////////
 
-    classTemp.status = stringTemp.substring( 0, stringTemp.length - 1 ); // parses status and assigns to class     
+    classObj.status = stringTemp.substring( 0, stringTemp.length - 1 ); // parses status and assigns to class     
     // }
     // catch ( err ) // if status missing
     // {
@@ -10926,15 +10957,15 @@ return jQuery;
 
     // try
     // {
-    stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
+    stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove seats
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove seats
 
 
 
     // seats /////////////////////////////////////////////////////////////////////////////////
 
-    classTemp.seats = stringTemp.substring( 0, stringTemp.length - 1 ); // parses seats and assing to class
+    classObj.seats = stringTemp.substring( 0, stringTemp.length - 1 ); // parses seats and assing to class
     // }
     // catch ( err ) // if seats missing
     // {
@@ -10944,9 +10975,9 @@ return jQuery;
 
 
 
-    stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
+    stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove dates
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove dates
 
     stringTempArr.splice( 0, stringTempArr.length ); // clear array
 
@@ -10956,13 +10987,13 @@ return jQuery;
 
 
 
-    for ( i = 0 ; j < sessionLength; j++ ) // for number of session parse dates as days from jan 1
+    for ( i = 0; i < sessionLength; i++ ) // for number of session parse dates as days from jan 1
     {
         var month, day;
 
-        classTemp.sessions[ j ].dateS = stringTempArr[ j ]; // assing date to class
+        classObj.sessions_[ i ].dateS = stringTempArr[ i ]; // assing date to class
 
-        stringTemp = stringTempArr[ j ];
+        stringTemp = stringTempArr[ i ];
 
         month = MonthToDay( Number( stringTemp.match( /\d\d?/ )[ 0 ] ) ); // parses the start month and converts it to days from jan 1st
 
@@ -10972,7 +11003,7 @@ return jQuery;
 
         stringTemp = stringTemp.replace( /\d\d?\-/, "" ); // removes start day
 
-        classTemp.sessions[ j ].dateStart = month + day; // assign start date as number of days from jan 1st
+        classObj.sessions_[ i ].dateStart = month + day; // assign start date as number of days from jan 1st
 
 
         // same but for end date
@@ -10983,7 +11014,7 @@ return jQuery;
 
         day = Number( stringTemp.match( /\d\d?/ )[ 0 ] );
 
-        classTemp.sessions[ j ].dateEnd = month + day;
+        classObj.sessions_[ i ].dateEnd = month + day;
     }
 
 
@@ -10991,14 +11022,14 @@ return jQuery;
 
     // try
     // {
-    stringTemp = courseText[ i ].match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
+    stringTemp = courseText.match( /.*?(>|\t)/ )[ 0 ]; // pull until first tab
 
-    courseText[ i ] = courseText[ i ].replace( /.*?(>|\t)/, "" ); // remove final exam
+    courseText = courseText.replace( /.*?(>|\t)/, "" ); // remove final exam
 
 
     // final exam //////////////////////////////////////////////////////////////////////////////
 
-    classTemp.finalExam = stringTemp.match( /\d\d?\/\d\d?\/\d{4}/ )[ 0 ]; // parse final exam and assing to class
+    classObj.finalExam = stringTemp.match( /\d\d?\/\d\d?\/\d{4}/ )[ 0 ]; // parse final exam and assing to class
     // }
     // catch ( err ) // if final exam missing
     // {
@@ -11009,11 +11040,11 @@ return jQuery;
 
     // try
     // {
-    if ( courseText[ i ].length > 0 ) // if class data remaing
+    if ( courseText.length > 0 ) // if class data remaing
     {
-        stringTemp = courseText[ i ].match( /.*?(>)/ )[ 0 ]; // pull until first tab
+        stringTemp = courseText.match( /.*?(>)/ )[ 0 ]; // pull until first tab
 
-        classTemp.note = stringTemp.substring( 0, stringTemp.length - 1 ).trim(); // parse note and assing to class
+        classObj.note = stringTemp.substring( 0, stringTemp.length - 1 ).trim(); // parse note and assing to class
     }
     // }
     // catch ( err ) // if error adding note
@@ -11021,10 +11052,10 @@ return jQuery;
     //     console.log( "error adding class notes" );
     // }
 
-    classObj.$div = AddClassElement( classObj.sect + ' - ' + classObj.instructor , $courseDiv );
+    classObj.$div = AddClassElement( classObj.sect + ' - ' + classObj.sessions_[ 0 ].instructor, $courseDiv );
+    classObj.$parent = $courseDiv;
 
-
-
+    return classObj;
     // }
     // catch ( err )
     // {
@@ -11033,6 +11064,26 @@ return jQuery;
     // }
  }
 
+ function ParseClassData( data, sessionNum )
+ {
+    parsed = [];
+
+    for ( var j = 0; j < sessionNum; j++ ) // for number of sessions parse times as strings
+    {
+        var temp = data.match( /.*?(>|&|\t)/ )[ 0 ]; // pull a session of data
+
+        data = data.replace( /.*?(>|&|\t)/, "" ); // remove day from string
+
+        parsed.push( temp.substring( 0, temp.length - 1 ) );
+
+        if ( data.length <= 1 ) // if missed tab
+        {
+            break;
+        }
+    }
+
+    return parsed;
+ }
 
  function Course( courseTitle )
  {
@@ -11076,17 +11127,20 @@ return jQuery;
     this.dateEnd = 0;
  }
 
- function Style( hue, sat, lit, alf )
+ function Style( hue, sat, lit )
  {
     this.hue = hue;
     this.sat = sat;
     this.lit = lit;
-    this.alf = alf;
  }
 
  function NextStyle()
  {
-    return new Style( 100, 50, 50, 1 );
+    if ( styleIndex === 20 )
+    {
+        styleIndex = 0;
+    }
+    return Styles_[ styleIndex++ ];
  }
 
 
@@ -11097,7 +11151,7 @@ return jQuery;
         class: 'course-wrap',
         css:
         {
-            background: 'hsl(' + style.hue + ', ' + style.sat + '%, ' + style.lit + '%)'
+            background: 'hsl(' + style.hue + ', ' + style.sat + '%, ' +  ( style.lit + 10 ) + '%)'
         }
     } ).appendTo( "#course-panel" ); // create a course div
 
@@ -11112,7 +11166,6 @@ return jQuery;
         '</div>' +
         '<div class="class-wrap"></div>'
     );
-    AddClassElement( $courseDiv, hue );
 
     return $courseDiv;
  }
@@ -11120,13 +11173,58 @@ return jQuery;
 
 
 
- function AddClassElement( classTitle , $courseDiv )
+ function AddClassElement( classTitle, $courseDiv )
  {
-    var $temp = $courseDiv.children( ".class-wrap" );
-    for ( var i = 0; i < 6; i++ )
-    {
-        $temp.append( '<div class="class-button" style="background-color: hsl(' + hue + ', 60%, 70%);"><span class="class-title">' + classTitle + '</span> <div class="class-close-button">X</div></div>' );
-    }
+    var $classDiv = $courseDiv.children( ".class-wrap" );
+
+    $classDiv.append( '<div class="class-button" style="background-color: hsl( 100 , 60%, 70%);"><span class="class-title">' + classTitle + '</span> <div class="class-close-button">X</div></div>' );
+
+    return $classDiv;
  }
 
- 
+
+ function MonthToDay( month )
+ {
+    var day = 0;
+
+    switch ( month )
+    {
+        case 2:
+            day += 31;
+            break;
+        case 3:
+            day += 59;
+            break;
+        case 4:
+            day += 90;
+            break;
+        case 5:
+            day += 120;
+            break;
+        case 6:
+            day += 151;
+            break;
+        case 7:
+            day += 181;
+            break;
+        case 8:
+            day += 212;
+            break;
+        case 9:
+            day += 243;
+            break;
+        case 10:
+            day += 273;
+            break;
+        case 11:
+            day += 304;
+            break;
+        case 12:
+            day += 334;
+            break;
+    }
+
+    return day;
+ }
+
+//# sourceMappingURL=production.js.map
