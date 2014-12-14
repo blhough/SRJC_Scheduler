@@ -1,0 +1,111 @@
+$hue-custom:120;
+$hue-add:188;
+$hue-cycle:85;
+$hue-print:216;
+$hue-restart:357;
+$sat:60%;
+$sat-hover:50%;
+$sat-press:70%;
+$light:65%;
+$light-hover:74%;
+$light-press:50%;
+.button-inside {
+    box-sizing: border-box;
+    position: relative;
+    font-family: calibri;
+    bottom: 0px;
+    width: 100%;
+    padding: 6px 10px;
+    color: black;
+    cursor: pointer;
+    line-height: 20px;
+    text-align: center;
+    font-size: 1.1em;
+    border: 1px solid black;
+    border-radius: .2em;
+    box-shadow: 0 2px 1px rgba(black, .1), 0 1px 2px rgba(black, .1);
+    transition: box-shadow .2s, bottom .2s, background .2s;
+    &:hover {
+        box-shadow: 0 4px 3px rgba(black, .1), 0 3px 4px rgba(black, .1);
+        bottom: 1px;
+    }
+    &:active {
+        box-shadow: 0 2px 1px rgba(black, .1), 0 1px 2px rgba(black, .1);
+        bottom: 0px;
+    }
+}
+.button {
+    box-sizing: border-box;
+    cursor: pointer;
+    padding: 3px;
+}
+.p-18 {
+    width: 18%;
+    float: left;
+}
+.p-64 {
+    width: 64%;
+    float: left;
+}
+.button-wrap {
+    clear: both;
+    position: relative;
+    &:first-child>.button {
+        padding-top: 6px;
+    }
+    &:last-child>.button {
+        padding-bottom: 6px;
+    }
+    >.button:first-child {
+        padding-left: 6px;
+    }
+    >.button:last-child {
+        padding-right: 6px;
+    }
+}
+.b-cycle .button .button-inside {
+    background-color: hsl($hue-cycle, $sat, $light);
+    &:hover {
+        background-color: hsl($hue-cycle, $sat-hover, $light-hover);
+    }
+    &:active {
+        background-color: hsl($hue-cycle, $sat-press, $light-press);
+    }
+}
+.b-custom .button .button-inside {
+    background-color: hsl($hue-custom, $sat, $light);
+    &:hover {
+        background-color: hsl($hue-custom, $sat-hover, $light-hover);
+    }
+    &:active {
+        background-color: hsl($hue-custom, $sat-press, $light-press);
+    }
+}
+.b-print .button .button-inside {
+    background-color: hsl($hue-print, $sat, $light);
+    &:hover {
+        background-color: hsl($hue-print, $sat-hover, $light-hover);
+    }
+    &:active {
+        background-color: hsl($hue-print, $sat-press, $light-press);
+    }
+}
+.b-restart .button .button-inside {
+    background-color: hsl($hue-restart, $sat, $light);
+    &:hover {
+        background-color: hsl($hue-restart, $sat-hover, $light-hover);
+    }
+    &:active {
+        background-color: hsl($hue-restart, $sat-press, $light-press);
+    }
+}
+.b-add .button .button-inside {
+    background-color: hsl($hue-add, $sat, $light);
+    &:hover {
+        background-color: hsl($hue-add, $sat-hover, $light-hover);
+    }
+    &:active {
+        background-color: hsl($hue-add, $sat-press, $light-press);
+    }
+}
+

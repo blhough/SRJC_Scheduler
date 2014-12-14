@@ -1,0 +1,108 @@
+$button-height:32px;
+$line-height:30px;
+$course-header-height:30px;
+$course-header-height2:40px;
+.course-wrap, .course-header, .class-button {
+    box-sizing: border-box;
+    width: 100%;
+}
+.course-wrap {
+    background: hsl(170, 60%, 82%);
+    padding: 6px;
+    border: 1px solid black;
+    border-radius: 2px;
+    min-width: 118px;
+    margin-top: 6px;
+    box-shadow: 0 2px 1px rgba(black, .1), 0 1px 2px rgba(black, .1);
+    transition: height .2s;
+    &:first-child {
+        margin: 0;
+    }
+}
+.course-header {
+    height: $course-header-height;
+    position: relative;
+}
+.class-removed {
+    height: $course-header-height2;
+}
+.class-button {
+    padding: 0 5px;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: $button-height;
+    line-height: $button-height;
+    background-color: hsl(170, 60%, 70%);
+    border: 0 solid black;
+    border-width: 0 1px 1px 1px;
+    transition: background .2s, height .2s, opacity .2s;
+    &:first-child {
+        border-width: 1px;
+        border-radius: 2px 2px 0 0;
+    }
+    &:last-child {
+        border-radius: 0 0 2px 2px;
+    }
+    &:hover {
+        background-color: hsl(170, 100%, 70%);
+    }
+    &:active {
+        background-color: hsl(170, 90%, 40%);
+    }
+    &.active {
+        background-color: hsl(170, 95%, 50%);
+    }
+}
+.class-mini {
+    height: 0;
+    border: 0;
+    opacity: 0;
+}
+.class-solo {
+    border: 1px solid black;
+    border-radius: 2px;
+}
+.course-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.course-subtitle {
+    font-size: .8em;
+    position: relative;
+    top: -8px;
+}
+.course-button-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.course-button {
+    float: right;
+    width: 20px;
+    text-align: center;
+    margin: 0 3px;
+    &:hover {
+        color: red;
+    }
+    &.active {
+        font-weight: 700;
+    }
+}
+.course-title, .course-button {
+    line-height: $line-height;
+}
+.class-close-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    text-align: center;
+    background: inherit;
+    &:hover {
+        color: red;
+    }
+}

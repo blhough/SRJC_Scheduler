@@ -1,18 +1,438 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint">
+    <head>
+        <meta charset="utf-8">
 
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
+        <title>SRJC Scheduler</title>
+        <meta name="description" content="The HTML5 Herald">
+        <meta name="author" content="SitePoint">
 
-</head>
+        <link rel="stylesheet" href="css/build/styles.min.css">
+    </head>
 
-<body>
-  <script src="js/build/main.js"></script>
-</body>
+    <body>
+        <div id="container">
+            <div id="header">SRJC Scheduler</div>
+            <div id="main">
+                <div id="first-panel">
+                    <div id="timesheet">
+                        <table id="time-table">
+                            <tr>
+                                <th id="table-first-col"></th>
+                                <th>
+                                    <div>Monday</div>
+                                </th>
+                                <th>
+                                    <div>Tuesday</div>
+                                </th>
+                                <th>
+                                    <div>Wednesday</div>
+                                </th>
+                                <th>
+                                    <div>Thursday</div>
+                                </th>
+                                <th>
+                                    <div>Friday</div>
+                                </th>
+                                <th>
+                                    <div>Saturday</div>
+                                </th>
+                                <th>
+                                    <div>Sunday</div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>6 AM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>7 AM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>8 AM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>9 AM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>10AM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>11AM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>12PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>5 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>6 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>7 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>8 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>9 PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>10PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>11PM</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="custom-module">
+                        <div class='button-wrap b-custom'>
+                            <div class='button'>
+                                <div class='button-inside'>Add Custom Event</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="second-panel">
+                    <div id="info-panel">
+
+                        <div class="info-title">PHYS 40</div>
+                        <div class="info-subtitle">ELECTRICTY MAGNETISM</div>
+                        <div class="info-sect">Sect:4722</div>
+
+                        <div class="info-session">
+                            <div class="info-days-wrap">Days:
+                                <span class="info-day">S</span>
+                                <span class="info-day active">M</span>
+                                <span class="info-day">T</span>
+                                <span class="info-day active">W</span>
+                                <span class="info-day">T</span>
+                                <span class="info-day">F</span>
+                                <span class="info-day">S</span>
+                            </div>
+                            <div class="info-hours">Hours: 4:30 PM - 6:00 PM</div>
+                            <div class="info-instructor">Instructor: Ataiiyan Y</div>
+                            <div class="info-location">Location: 1786</div>
+                            <div class="info-dates">Dates: 01/12-05/14</div>
+                        </div>
+
+                        <div class="info-session">
+                            <div class="info-days-wrap">Days:
+                                <span class="info-day">S</span>
+                                <span class="info-day active">M</span>
+                                <span class="info-day">T</span>
+                                <span class="info-day active">W</span>
+                                <span class="info-day">T</span>
+                                <span class="info-day active">F</span>
+                                <span class="info-day">S</span>
+                            </div>
+                            <div class="info-hours">Hours: 4:30 PM - 6:00 PM</div>
+                            <div class="info-instructor">Instructor: Ataiiyan Y</div>
+                            <div class="info-location">Location: 1786</div>
+                            <div class="info-dates">Dates: 01/12-05/14</div>
+                        </div>
+
+                        <div class="info-units">Units: 4.00</div>
+                        <div class="info-status">Status: Closed</div>
+                        <div class="info-seats">Seats: 0</div>
+                        <div class="info-final">Final: 05/18/2015</div>
+                        <div class="info-notes">Notes</div>
+
+                    </div>
+                    <div id="button-panel">
+
+                        <div class='button-wrap b-cycle'>
+                            <div class='button p-18'>
+                                <div class='button-inside'>
+                                    <</div>
+                                </div>
+                                <div class='button p-64'>
+                                    <div class='button-inside'>Cycle Classes</div>
+                                </div>
+                                <div class='button p-18'>
+                                    <div class='button-inside'>></div>
+                                </div>
+                            </div>
+
+                            <div class='button-wrap b-print'>
+                                <div class='button'>
+                                    <div class='button-inside'>Print</div>
+                                </div>
+                            </div>
+
+                            <div class='button-wrap b-restart'>
+                                <div class='button'>
+                                    <div class='button-inside'>Restart</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="third-panel">
+                        <div id="add-module">
+                            <div class='button-wrap b-add'>
+                                <div class="add-button add-collapse add-bar">V</div>
+                                <div class='button'>
+
+                                    <input readonly id="add-search" type='text' class="button-inside add-bar" placeholder="Add Course" />
+
+                                </div>
+                                <div class="add-button add-close add-bar">X</div>
+                            </div>
+                            <div class="add-results">
+                                <ul class="add-results-list">
+                                    <li>phys 40</li>
+                                    <li>phys 40</li>
+                                    <li>phys 40</li>
+                                    <li>phys 40</li>
+                                    <li>phys 40</li>
+                                    <li>phys 40</li>
+                                    <li>phys 40</li>
+                                    <li>phys 40</li>
+                                    <li>phys 40</li>
+                                    <li>phys 40</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="course-panel">
+
+                            <div class="course-wrap">
+                                <div class="course-header class-removed">
+                                    <div class="course-title">CHEM 1B</div>
+                                    <div class="course-subtitle">3 classes removed</div>
+                                    <div class="course-button-wrap">
+                                        <div class="course-button">z</div>
+                                        <div class="course-button">y</div>
+                                        <div class="course-button">x</div>
+                                        <div class="course-button course-collapse">w</div>
+                                    </div>
+                                </div>
+                                <div class="class-wrap">
+                                    <div class="class-button class-first"><span class="class-title">1987 - Falbo</span>
+                                        <div class="class-close-button">X</div>
+                                    </div>
+                                    <div class="class-button active"><span class="class-title">6584 - Galen</span>
+                                        <div class="class-close-button">X</div>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">8495 - Melbartus</span>
+                                        <div class="class-close-button">X</div>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">9134 - Williams</span>
+                                        <div class="class-close-button">X</div>
+                                    </div>
+                                    <div class="class-button class-last"><span class="class-title">2498 - Martin</span>
+                                        <div class="class-close-button">X</div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="course-wrap">
+                                <div class="course-header">
+                                    <div class="course-title">CHEM 1B</div>
+                                    <div class="course-button-wrap">
+                                        <div class="course-button">z</div>
+                                        <div class="course-button">y</div>
+                                        <div class="course-button">x</div>
+                                        <div class="course-button course-collapse">w</div>
+                                    </div>
+                                </div>
+                                <div class="class-wrap">
+                                    <div class="class-button"><span class="class-title">1987 - Falbo</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">6584 - Galen</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">8495 - Melbartus</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">9134 - Williams</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">2498 - Martin</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="course-wrap">
+                                <div class="course-header">
+                                    <div class="course-title">CHEM 1B</div>
+                                    <div class="course-button-wrap">
+                                        <div class="course-button">z</div>
+                                        <div class="course-button">y</div>
+                                        <div class="course-button">x</div>
+                                        <div class="course-button course-collapse">w</div>
+                                    </div>
+                                </div>
+                                <div class="class-wrap">
+                                    <div class="class-button"><span class="class-title">1987 - Falbo</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">1987 - Falbo</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">1987 - Falbo</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">1987 - Falbo</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">6584 - Galen</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">8495 - Melbartus</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">9134 - Williams</span>
+                                    </div>
+                                    <div class="class-button"><span class="class-title">2498 - Martin</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div id="footer"></div>
+            </div>
+            <script src="js/build/main.min.js"></script>
+
+    </body>
+
 </html>
