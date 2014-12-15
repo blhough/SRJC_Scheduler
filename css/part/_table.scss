@@ -34,3 +34,9 @@
 #time-table td:last-child,#time-table th:last-child {
     border-right-width: 0;
 }
+.drawClass {
+position: absolute;
+border: solid 1px black;
+display: block;
+padding: 0px;
+}

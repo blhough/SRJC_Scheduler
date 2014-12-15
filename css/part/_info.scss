@@ -1,40 +1,50 @@
 #info-panel {
     background: #F5F5F5;
-    background: linear-gradient(to bottom, hsl(163,63%,85%) 1%,hsl(0,0%,96%) 25%);
+    // background: linear-gradient(to bottom, hsl(163,63%,85%) 1%,hsl(0,0%,96%) 25%);
     padding: 24px;
-	flex: 1 1;
+    flex: 1 1;
+    position: relative;
+    overflow: hidden;
+}
+#info-panel div:not(.info-effect) {
+    user-select: initial;
+    position: relative;
+    z-index: 2;
+}
+.info-effect {
+    position: absolute;
+    top: -100px;
+    left: -100px;
+    right: -100px;
+    background: #ddd;
+    height: 100px;
+    transition: box-shadow .2s;
+    box-shadow: 0 0 120px hsl(163, 63%, 85%), 0 0 150px hsl(163, 63%, 85%), 0 0 200px hsl(163, 63%, 85%);
+    z-index: 1;
+}
+.info-title {
+    font-size: 2em;
+}
+.info-subtitle,
+.info-sect {
+    font-size: 1.1em;
+}
+.info-session {
+    margin: 20px 0;
+    line-height: 20px;
+}
+.info-day {
+    border: 1px solid black;
+    border-radius: 2px;
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    user-select: none;
+    opacity: .3;
+}
+.info-day.active {
+    background: #def;
+    opacity: 1;
+    user-select: initial;
 }
 
-#info-panel div{
-	user-select:initial;
-
-}
-
-.info-title{
-	font-size: 2em;
-}
-
-.info-subtitle, .info-sect{
-	font-size:1.1em;
-}
-
-.info-session{
-	margin: 20px 0;
-	line-height: 20px;
-}
-
-.info-day{
-	border: 1px solid black;
-	border-radius: 2px;
-	display:inline-block;
-	width: 20px;
-	text-align: center;
-	user-select:none;
-	opacity: .3;
-}
-
-.info-day.active{
-	background: #def;
-	opacity: 1;
-	user-select: initial;
-}

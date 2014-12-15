@@ -2,6 +2,7 @@ $button-height:32px;
 $line-height:30px;
 $course-header-height:30px;
 $course-header-height2:40px;
+$trans-time:.2s;
 .course-wrap, .course-header, .class-button {
     box-sizing: border-box;
     width: 100%;
@@ -14,7 +15,7 @@ $course-header-height2:40px;
     min-width: 118px;
     margin-top: 6px;
     box-shadow: 0 2px 1px rgba(black, .1), 0 1px 2px rgba(black, .1);
-    transition: height .2s;
+    transition: height $trans-time;
     &:first-child {
         margin: 0;
     }
@@ -37,7 +38,7 @@ $course-header-height2:40px;
     background-color: hsl(170, 60%, 70%);
     border: 0 solid black;
     border-width: 0 1px 1px 1px;
-    transition: background .2s, height .2s, opacity .2s;
+    transition: background $trans-time, height $trans-time, opacity $trans-time;
     &:first-child {
         border-width: 1px;
         border-radius: 2px 2px 0 0;

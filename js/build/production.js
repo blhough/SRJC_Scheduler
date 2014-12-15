@@ -10315,6 +10315,26 @@ return jQuery;
  var tableRowH;
  var panelMinW = 220;
 
+
+
+
+    var SPRING_START = MonthToDay( 1 ) + 20; // January 1
+    var SPRING_END = MonthToDay( 5 ) + 10; // May 10
+
+    var SUMMER_START = MonthToDay( 6 ) + 20; // june 20
+    var SUMMER_END = MonthToDay( 7 ) + 27; // july 27
+
+    var FALL_START = MonthToDay( 8 ) + 26; // august 26
+    var FALL_END = MonthToDay( 12 ) + 9; // december 9
+
+
+    var cellW = 100; // cell width of canvas table
+    var cellH = 30; // cell height of canvas table
+
+    var firstRowH = $( "#table-first-col" ).outerHeight( true ) - 1; // height of the first row of the table to determine the offset for the class divs
+    var firstColW = 38;
+
+
  function Redraw()
  {
     $( '#footer' ).outerHeight( 30 + 'px' );
@@ -10427,17 +10447,113 @@ return jQuery;
  }
 
 
+
+
+
+
+
  $( "#course-panel" ).on( "click", ".course-collapse", function()
  {
     CourseCollapseToggle( $( this ) );
     console.log( "click course-collapse" );
+
+    var toggle = $( this ).parents( ".course-wrap" ).data( "course" ).expanded;
+    $( this ).parents( ".course-wrap" ).data( "course" ).expanded = !toggle;
+
  } );
+
+
+
+
+
 
  $( "#course-panel" ).on( "click", ".class-button", function()
  {
+    var obj = $( this ).data( "class" );
+    var toggle = !obj.active;
+    var classes_ = obj.parent.classes_;
+
+    var classesLen = classes_.length;
+    for ( var i = 0; i < classesLen; i++ )
+    {
+        if ( classes_[ i ].active )
+        {
+            classes_[ i ].active = false;
+            classes_[ i ].RefreshStyle();
+        }
+    }
+
+    obj.active = toggle;
+
     $( this ).parent().children().removeClass( "active" );
-    $( this ).addClass( "active" );
+    if ( toggle )
+    {
+        $( this ).addClass( "active" );
+    }
+    else if ( !obj.parent.expanded )
+    {
+        $( this ).addClass( "class-mini" );
+        $( this ).removeClass( "class-solo" );
+    }
+
+
+    obj.RefreshStyle();
+    obj.DrawClass();
+
+    console.log( "click class-button" );
+    console.log( obj.parent.expanded );
  } );
+
+
+ $( "#course-panel" ).on( "mouseenter", ".class-button", function()
+ {
+    var obj = $( this ).data( "class" );
+    obj.hover = true;
+
+    obj.RefreshStyle();
+
+    //console.log( "mouseenter class-button" );
+ } );
+
+
+ $( "#course-panel" ).on( "mouseleave", ".class-button", function()
+ {
+    var obj = $( this ).data( "class" );
+    obj.hover = false;
+
+    obj.RefreshStyle();
+
+    //console.log( "mouseleave class-button" );
+ } );
+
+
+ $( "#course-panel" ).on( "mousedown", ".class-button", function()
+ {
+    var obj = $( this ).data( "class" );
+    obj.press = true;
+
+    obj.RefreshStyle();
+
+    //console.log( "mouseleave class-button" );
+ } );
+
+
+ $( "#course-panel" ).on( "mouseup", ".class-button", function()
+ {
+    var obj = $( this ).data( "class" );
+    obj.press = false;
+
+    obj.RefreshStyle();
+
+    //console.log( "mouseleave class-button" );
+ } );
+
+
+
+
+
+
+
 
 
  function AddModuleCollapse( collapse )
@@ -10556,13 +10672,11 @@ return jQuery;
 
  //});
 
-
-
-
-
-
-
-
+ $( '.b-restart>div>div' ).click( function()
+ {
+    var temp_ = [ "<4722\tMW&Th\t4:30 pm - 6:00 pm&12:00 pm - 3:00 pm\tAtaiiyan Y&Ataiiyan Y\t1786&1782\t4.00\tClosed\t0\t01/12-05/14&01/12-05/14\t5/18/2015>", "<4727\tMW&Th\t4:30 pm - 6:00 pm&9:00 am - 12:00 pm\tAtaiiyan Y&Ataiiyan Y\t1786&1782\t4.00\tWait List\t1\t01/12-05/14&01/12-05/14\t5/18/2015>", "<6593\tMW&Th\t4:30 pm - 6:00 pm&6:00 pm - 9:00 pm\tAtaiiyan Y&Ataiiyan Y\t1786&1782\t4.00\tOpen\t2\t01/12-05/14&01/12-05/14\t5/14/2015>" ];
+    AddCourse( temp_, "MATH 2", 1 );
+ } );
 
  var courses = []; // contains the course objects
  var courseData = []; // contains the raw data for the courses
@@ -10623,30 +10737,27 @@ return jQuery;
     courseObj.style = NextStyle();
 
 
-    courseObj.$div = AddCourseElement( courseTitle, courseObj.style );
-    courseObj.classes_ = AddClasses( courseText_, courseObj.$div, activeClassNum );
+    courseObj.$div = AddCourseElement( courseObj );
+    courseObj.classes_ = AddClasses( courseText_, courseObj.$div, activeClassNum, courseObj );
+    courseObj.RefreshStyle();
 
-    courseObj.$div.data( "course", courseObj );
     console.log( courseObj.classes_ );
-
-
-
  }
 
- function AddClasses( courseText_, $courseDiv, activeClassNum )
+ function AddClasses( courseText_, $courseDiv, activeClassNum, courseObj )
  {
     var courseTextLen = courseText_.length;
     var classes_ = [];
 
     for ( var i = 0; i < courseTextLen; i++ )
     {
-        classes_.push( AddClass( courseText_[ i ], $courseDiv, ( i === activeClassNum ) ) );
+        classes_.push( AddClass( courseText_[ i ], $courseDiv, ( i === activeClassNum ), courseObj ) );
     }
 
     return classes_;
  }
 
- function AddClass( courseText, $courseDiv, isActive )
+ function AddClass( courseText, $courseDiv, isActive, courseObj )
  {
     var classObj = new Class();
     var i;
@@ -11052,8 +11163,11 @@ return jQuery;
     //     console.log( "error adding class notes" );
     // }
 
-    classObj.$div = AddClassElement( classObj.sect + ' - ' + classObj.sessions_[ 0 ].instructor, $courseDiv );
+    classObj.$div = AddClassElement( classObj, $courseDiv );
     classObj.$parent = $courseDiv;
+    classObj.style = courseObj.style;
+    classObj.parent = courseObj;
+
 
     return classObj;
     // }
@@ -11095,11 +11209,24 @@ return jQuery;
     this.unlocked = true;
     this.classDeletedNum = 0;
     this.style = new Style();
+
+    this.RefreshStyle = function()
+    {
+        this.$div.css( 'background', 'hsl(' + this.style.hue + ', ' + ( this.style.sat - 10 ) + '%, ' + ( this.style.lit + 25 ) + '%)' );
+
+        var classesLen = this.classes_.length;
+        for ( var i = 0; i < classesLen; i++ )
+        {
+            this.classes_[ i ].RefreshStyle();
+        }
+    };
  }
 
  function Class()
  {
     this.active = false; // drawn on screen
+    this.hover = false;
+    this.press = false;
     this.note = ""; // class note
     this.sect = 0; // class section number
     this.seats = 0; // setats available
@@ -11109,7 +11236,82 @@ return jQuery;
     this.sessions_ = []; // class sessions array
     this.$div = null; // div of button
     this.$parent = null; // course div
+    this.parent = null;
     this.style = null;
+
+
+    this.RefreshStyle = function()
+    {
+        if ( this.press )
+        {
+            this.$div.css( 'background', 'hsl(' + ( this.style.hue ) + ', ' + ( this.style.sat + 20 ) + '%, ' + ( this.style.lit - 10 ) + '%)' );
+        }
+        else if ( this.hover && this.active )
+        {
+            this.$div.css( 'background', 'hsl(' + ( this.style.hue ) + ', ' + ( this.style.sat + 35 ) + '%, ' + ( this.style.lit + 17 ) + '%)' );
+        }
+        else if ( this.hover )
+        {
+            this.$div.css( 'background', 'hsl(' + ( this.style.hue ) + ', ' + ( this.style.sat + 25 ) + '%, ' + ( this.style.lit + 25 ) + '%)' );
+        }
+        else if ( this.active )
+        {
+            this.$div.css( 'background', 'hsl(' + ( this.style.hue ) + ', ' + ( this.style.sat + 35 ) + '%, ' + ( this.style.lit + 7 ) + '%)' );
+        }
+        else
+        {
+            this.$div.css( 'background', 'hsl(' + ( this.style.hue ) + ', ' + ( this.style.sat - 25 ) + '%, ' + ( this.style.lit + 20 ) + '%)' );
+        }
+
+
+
+        /*  background-color: hsl(170, 60%, 70%);
+
+            &:hover {
+                background-color: hsl(170, 100%, 70%);
+            }
+            &:active {
+                background-color: hsl(170, 90%, 40%);
+            }
+            &.active {
+                background-color: hsl(170, 95%, 50%);
+            }*/
+    };
+
+    this.DrawClass = function() // draws each session in the class
+        {
+            for ( var i = 0; i < this.sessions_.length; i++ )
+            {
+                this.DrawSession( i );
+            }
+        };
+
+
+    this.DrawSession = function( sessionNum ) // draws the individual session of a class
+        {
+            var infoTemp = this.parent.courseTitle;
+            var info;
+
+            for ( var i = 0; i < 7 ; i++ )
+            {
+                if ( this.sessions_[ sessionNum ].days[ i ] == 1 )
+                {
+                    var x1, x2, y1, y2;
+
+                    x1 = GetDrawX( i, this.sessions_[ sessionNum ].dateStart, this.sessions_[ sessionNum ].dateStart );
+                    x2 = GetDrawX( i, this.sessions_[ sessionNum ].dateEnd + 0.001, this.sessions_[ sessionNum ].dateStart ); // + cellW + 1;
+                    y1 = GetDrawY( this.sessions_[ sessionNum ].timeStart );
+                    y2 = GetDrawY( this.sessions_[ sessionNum ].timeEnd );
+
+                    info = infoTemp + "</br>Loc: " + this.sessions_[ sessionNum ].location;
+
+
+                    DrawRect( x1, y1, x2, y2, "black", 1, true, "hsla(" + this.style.hue + "," + 90 + "%," + /* this.lval */ 60 + "%," + 1 + ")", info, this, sessionNum );
+                }
+            }
+
+
+        };
  }
 
 
@@ -11144,19 +11346,18 @@ return jQuery;
  }
 
 
- function AddCourseElement( courseTitle, style )
+ function AddCourseElement( courseObj )
  {
     var $courseDiv = $( "<div/>",
     {
         class: 'course-wrap',
-        css:
-        {
-            background: 'hsl(' + style.hue + ', ' + style.sat + '%, ' +  ( style.lit + 10 ) + '%)'
-        }
+
     } ).appendTo( "#course-panel" ); // create a course div
 
+    $courseDiv.data( "course", courseObj );
+
     $courseDiv.append( '<div class="course-header">' +
-        '<div class="course-title">' + courseTitle + '</div>' +
+        '<div class="course-title">' + courseObj.courseTitle + '</div>' +
         '<div class="course-button-wrap">' +
         '<div class="course-button">z</div>' +
         '<div class="course-button">y</div>' +
@@ -11173,11 +11374,21 @@ return jQuery;
 
 
 
- function AddClassElement( classTitle, $courseDiv )
+ function AddClassElement( classObj, $courseDiv )
  {
-    var $classDiv = $courseDiv.children( ".class-wrap" );
+    var $classDiv = $( "<div/>",
+    {
+        class: "class-button"
+    } );
 
-    $classDiv.append( '<div class="class-button" style="background-color: hsl( 100 , 60%, 70%);"><span class="class-title">' + classTitle + '</span> <div class="class-close-button">X</div></div>' );
+    $classDiv.data( "class", classObj );
+
+    $classDiv.append( '<span class="class-title">' +
+        ( classObj.sect + ' - ' + classObj.sessions_[ 0 ].instructor ) +
+        '</span> <div class="class-close-button">X</div>'
+    );
+
+    $courseDiv.children( ".class-wrap" ).append( $classDiv );
 
     return $classDiv;
  }
@@ -11226,5 +11437,75 @@ return jQuery;
 
     return day;
  }
+
+
+
+
+ function DrawRect( x, y, x2, y2, col1, lw, fill, col2, info, parent, sessionNum ) // creates a div over the table to represent a class session
+    {
+        $div = $( "<div>",
+        {
+            class: "drawClass",
+        } ); // create a course div
+
+        $div.width( x2 - x - lw * 2 + "px" );
+        $div.height( 1 + y2 - y - lw * 2 + "px" );
+
+        $div.css( "top", y + "px" );
+        $div.css( "left", x + "px" );
+
+        $div.css( "box-shadow", "inset 0 0 0 1000px " + col2 );
+        $div.css( "border-color", col1 );
+        $div.css( "border-width", lw + "px" );
+
+
+        /*
+        if ( info !== undefined )
+        {
+            $div.html( "<div><p>" + info + "</p></div>" );
+            $div.data( "parent", parent ); // bind class object to button
+            $div.data( "sessionNum", sessionNum );
+        }
+        */
+
+        $( "#timesheet" ).append( $div );
+    }
+
+
+    function GetDrawX( day , date , dateStart ) // converts the day of the week and start/end dates into x coords
+    {
+        var semStart , semEnd;
+
+        if ( dateStart < 152 )
+        {
+            semStart = SPRING_START;
+            semEnd = SPRING_END;
+        }
+        else if ( dateStart < 213 )
+        {
+            semStart = SUMMER_START;
+            semEnd = SUMMER_END;
+        }
+        else
+        {
+            semStart = FALL_START;
+            semEnd = FALL_END;
+        }
+
+        if ( date == dateStart )
+        {
+            return ( firstColW + Math.round( Math.min( Math.round( Math.min( Math.max( 0 , date - semStart ) , semEnd - semStart ) / 7 ) * 7 , semEnd - semStart ) * ( cellW / ( semEnd - semStart ) ) + ( cellW + 2 ) * day ) );
+        }
+        else
+        {
+            return ( firstColW + Math.round( Math.min( Math.ceil( Math.min( Math.max( 0 , date - semStart ) , semEnd - semStart ) / 7 ) * 7 , semEnd - semStart ) * ( ( cellW + 3 ) / ( semEnd - semStart ) ) + ( cellW + 2 ) * day ) );
+        }
+    }
+
+
+    function GetDrawY( time ) // converts class start times into y coords
+    {
+        return ( firstRowH + Math.round( ( time ) * ( cellH / 60 ) ) );
+    }
 
 //# sourceMappingURL=production.js.map
