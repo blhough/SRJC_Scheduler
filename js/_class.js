@@ -36,6 +36,7 @@ function Class()
             self.hover = true;
 
             self.RefreshStyle();
+            self.PopulateInfo();
             console.info( self.sect + "mouseenter" );
 
             //console.log( "mouseenter class-button" );
@@ -185,7 +186,7 @@ function Class()
     {
         for ( var day = 0; day < 7; day++ )
         {
-            if ( self.sessions_[ sessionNum ].days[ day ] == 1 )
+            if ( self.sessions_[ sessionNum ].days_[ day ] == 1 )
             {
                 srjc.canvas.SessionAdd( new self.SessionDiv( self, day, self.sessions_[ sessionNum ].dateStart,
                     self.sessions_[ sessionNum ].dateEnd,
@@ -217,5 +218,11 @@ function Class()
         this.style = style;
     };
 
+    // public //
+    this.PopulateInfo = function () 
+    {
+        srjc.info.PopulateInfo( self );
+    
+    };
 
 }

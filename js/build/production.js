@@ -80,6 +80,7 @@ function Style( hue, sat, lit )
 function Course( courseTitle )
 {
     this.courseTitle = courseTitle;
+    this.courseSubtitle = "test test";
     this.classes_ = [];
     this.$div = null;
     this.visible = true;
@@ -262,32 +263,32 @@ function Course( courseTitle )
                     // assign values to days array, 1 = true
                     {
                         case "M":
-                            sessionObj.days[ 0 ] = 1;
+                            sessionObj.days_[ 0 ] = 1;
                             break;
 
                         case "T":
-                            sessionObj.days[ 1 ] = 1;
+                            sessionObj.days_[ 1 ] = 1;
                             break;
 
                         case "W":
-                            sessionObj.days[ 2 ] = 1;
+                            sessionObj.days_[ 2 ] = 1;
                             break;
 
                         case "R":
-                            sessionObj.days[ 3 ] = 1;
+                            sessionObj.days_[ 3 ] = 1;
                             break;
 
                         case "F":
-                            sessionObj.days[ 4 ] = 1;
+                            sessionObj.days_[ 4 ] = 1;
                             break;
 
                         case "S":
-                            sessionObj.days[ 5 ] = 1;
+                            sessionObj.days_[ 5 ] = 1;
                             //isSaturday = true;
                             break;
 
                         case "N":
-                            sessionObj.days[ 6 ] = 1;
+                            sessionObj.days_[ 6 ] = 1;
                             //isSunday = true;
                             break;
                     }
@@ -665,6 +666,7 @@ function Class()
             self.hover = true;
 
             self.RefreshStyle();
+            self.PopulateInfo();
             console.info( self.sect + "mouseenter" );
 
             //console.log( "mouseenter class-button" );
@@ -814,7 +816,7 @@ function Class()
     {
         for ( var day = 0; day < 7; day++ )
         {
-            if ( self.sessions_[ sessionNum ].days[ day ] == 1 )
+            if ( self.sessions_[ sessionNum ].days_[ day ] == 1 )
             {
                 srjc.canvas.SessionAdd( new self.SessionDiv( self, day, self.sessions_[ sessionNum ].dateStart,
                     self.sessions_[ sessionNum ].dateEnd,
@@ -846,6 +848,12 @@ function Class()
         this.style = style;
     };
 
+    // public //
+    this.PopulateInfo = function () 
+    {
+        srjc.info.PopulateInfo( self );
+    
+    };
 
 }
 
@@ -857,7 +865,7 @@ console.log("Session.js loaded");
 
 function Session()
 {
-    this.days = [];
+    this.days_ = [];
     this.daysS = "";
     this.timeStart = 0;
     this.timeS = "";
@@ -1065,13 +1073,86 @@ function Canvas()
 
 
 
-console.log("Info.js loaded");
+console.log( "Info.js loaded" );
 
 
 function Info()
 {
-	
+	var self = this;
+
+	var _ = {
+		infoPanel: $( "#info-panel" ),
+		info: $( "#info" ),
+	};
+
+	this.Init = function( courseObj )
+	{
+		self.BindEvents();
+	};
+
+	this.BindEvents = function() {
+
+	};
+
+	// public //
+	this.PopulateInfo = function( classe )
+	{
+
+		var info = "";
+		var weekdays = "SMTWTFS";
+
+		info += '<div class="info-title">' + classe.parent.courseTitle + '</div>';
+		info += '<div class="info-subtitle">' + classe.parent.courseSubtitle + '</div>';
+		info += '<div class="info-sect">Sect: ' + classe.sect + '</div>';
+
+		var sessionsLen = classe.sessions_.length;
+		var session;
+
+		for ( var i = 0; i < sessionsLen; i++ )
+		{
+			session = classe.sessions_[ i ]; 
+			info += '<div class="info-session">';
+			info += '<div class="info-days-wrap">Days:';
+
+			for ( var j = 0; j < 7; j++ )
+			{
+				if ( session.days_[ j - 1 ] === 1 )
+				{
+					info += '<span class="info-day active" style="background:hsl(' + ( classe.style.hue ) + ', ' + ( classe.style.sat ) + '%, ' + ( classe.style.lit + 30 ) + '%)">' + weekdays.charAt( j ) + '</span>';
+				}
+				else
+				{
+					info += '<span class="info-day">' + weekdays.charAt( j ) + '</span>';
+				}
+			}
+
+			info += '</div>';
+			info += '<div class="info-hours">Hours: ' + session.timeS + '</div>';
+            info += '<div class="info-instructor">Instructor: ' +  session.instructor + '</div>';
+            info += '<div class="info-location">Location: ' + session.location + '</div>';
+            info += '<div class="info-dates">Dates: ' + session.dateS + '</div>';
+            info += '</div>';
+		}
+
+		info += '<div class="info-units">Units: ' + classe.units + '</div>';
+        info += '<div class="info-status">Status: ' + classe.status + '</div>';
+        info += '<div class="info-seats">Seats: ' + classe.seats + '</div>';
+        info += '<div class="info-final">Final: ' + classe.finalExam + '</div>';
+        info += '<div class="info-notes">Notes: ' + classe.note + '</div>';
+
+		_.info.html( info );
+
+		 $('.info-effect').css( "box-shadow" , '0 0 120px hsl(' + ( classe.style.hue ) + ', ' + ( classe.style.sat ) + '%, ' + ( classe.style.lit + 20 ) + '%),' +
+		 	'0 0 150px hsl(' + ( classe.style.hue ) + ', ' + ( classe.style.sat ) + '%, ' + ( classe.style.lit + 20 ) + '%),' +
+		 	'0 0 200px hsl(' + ( classe.style.hue ) + ', ' + ( classe.style.sat ) + '%, ' + ( classe.style.lit + 20 ) + '%)' );
+
+
+
+
+	};
+
 }
+
 
 
 
@@ -1363,7 +1444,7 @@ console.log("Button.js loaded");
 console.log( "Main.js loaded" );
 
  var SPRING_START = MonthToDay( 1 ) + 12; // January 1
- var SPRING_END = MonthToDay( 5 ) + 15; // May 10
+ var SPRING_END = MonthToDay( 5 ) + 12; // May 10
 
  var SUMMER_START = MonthToDay( 6 ) + 20; // june 20
  var SUMMER_END = MonthToDay( 7 ) + 27; // july 27

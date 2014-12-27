@@ -3,7 +3,7 @@ console.log("Session.js loaded");
 
 function Session()
 {
-    this.days = [];
+    this.days_ = [];
     this.daysS = "";
     this.timeStart = 0;
     this.timeS = "";

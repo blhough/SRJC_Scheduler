@@ -126,7 +126,7 @@ function Canvas()
             semEnd = FALL_END;
         }
 
-        var width = Math.max( 7, Math.min( sessionDiv.dateEnd - sessionDiv.dateStart, semEnd - semStart ) ) + Math.min( sessionDiv.dateStart - semStart, 0 ) - Math.max( sessionDiv.dateEnd - semEnd, 0 );
+        var width = Math.max( 7, sessionDiv.dateEnd - sessionDiv.dateStart ) + Math.min( sessionDiv.dateStart - semStart, 0 ) - Math.max( sessionDiv.dateEnd - semEnd, 0 );
         console.log( width + "width 1" );
 
         var dateStart = Math.min( Math.max( sessionDiv.dateStart - semStart, 0 ), semEnd - semStart - width );

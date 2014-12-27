@@ -1,7 +1,7 @@
 console.log( "Main.js loaded" );
 
- var SPRING_START = MonthToDay( 1 ) + 12; // January 1
- var SPRING_END = MonthToDay( 5 ) + 15; // May 10
+ var SPRING_START = MonthToDay( 1 ) + 19; // January 1
+ var SPRING_END = MonthToDay( 5 ) + 8 // May 10
 
  var SUMMER_START = MonthToDay( 6 ) + 20; // june 20
  var SUMMER_END = MonthToDay( 7 ) + 27; // july 27

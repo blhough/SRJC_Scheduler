@@ -236,10 +236,15 @@
 
 #info-panel {
   background: #F5F5F5;
-  padding: 24px;
   flex: 1 1;
   position: relative;
-  overflow: hidden; }
+  overflow: hidden;
+  display: flex; }
+
+#info {
+  overflow: auto;
+  padding: 24px;
+  display: block; }
 
 #info-panel div:not(.info-effect) {
   user-select: initial;
@@ -254,7 +259,6 @@
   background: #ddd;
   height: 100px;
   transition: box-shadow .2s;
-  box-shadow: 0 0 120px #c1f1e3, 0 0 150px #c1f1e3, 0 0 200px #c1f1e3;
   z-index: 1; }
 
 .info-title {

@@ -43,6 +43,7 @@ function Style( hue, sat, lit )
 function Course( courseTitle )
 {
     this.courseTitle = courseTitle;
+    this.courseSubtitle = "test test";
     this.classes_ = [];
     this.$div = null;
     this.visible = true;
@@ -225,32 +226,32 @@ function Course( courseTitle )
                     // assign values to days array, 1 = true
                     {
                         case "M":
-                            sessionObj.days[ 0 ] = 1;
+                            sessionObj.days_[ 0 ] = 1;
                             break;
 
                         case "T":
-                            sessionObj.days[ 1 ] = 1;
+                            sessionObj.days_[ 1 ] = 1;
                             break;
 
                         case "W":
-                            sessionObj.days[ 2 ] = 1;
+                            sessionObj.days_[ 2 ] = 1;
                             break;
 
                         case "R":
-                            sessionObj.days[ 3 ] = 1;
+                            sessionObj.days_[ 3 ] = 1;
                             break;
 
                         case "F":
-                            sessionObj.days[ 4 ] = 1;
+                            sessionObj.days_[ 4 ] = 1;
                             break;
 
                         case "S":
-                            sessionObj.days[ 5 ] = 1;
+                            sessionObj.days_[ 5 ] = 1;
                             //isSaturday = true;
                             break;
 
                         case "N":
-                            sessionObj.days[ 6 ] = 1;
+                            sessionObj.days_[ 6 ] = 1;
                             //isSunday = true;
                             break;
                     }
