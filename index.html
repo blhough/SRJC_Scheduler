@@ -10,17 +10,20 @@
         <meta name="author" content="SitePoint">
 
         <link rel="stylesheet" href="css/build/styles.min.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     </head>
 
     <body>
         <div id="container">
-            <div id="header"><img src="img/title.png" alt="SRJC Scheduler"></div>
+            <div id="header"><img src="img/title.png" alt="SRJC Scheduler">
+            </div>
             <div id="main">
                 <div id="first-panel">
                     <div id="timesheet">
+                        <div id="canvas"></div>
                         <table id="time-table">
                             <tr>
-                                <th id="table-first-col"></th>
+                                <th></th>
                                 <th>
                                     <div>Monday</div>
                                 </th>
@@ -45,7 +48,7 @@
                             </tr>
                             <tr>
                                 <td>6 AM</td>
-                                <td></td>
+                                <td id="cell"></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -287,7 +290,7 @@
                                     <</div>
                                 </div>
                                 <div class='button p-64'>
-                                    <div class='button-inside'>Cycle Classes</div>
+                                    <div class='button-inside inactive'>Cycle Classes</div>
                                 </div>
                                 <div class='button p-18'>
                                     <div class='button-inside'>></div>
@@ -311,31 +314,35 @@
                     <div id="third-panel">
                         <div id="add-module">
                             <div class='button-wrap b-add'>
-                                <div class="add-button add-collapse add-bar">V</div>
+                                <div class="add-button add-collapse add-bar">u</div>
                                 <div class='button'>
 
-                                    <input readonly id="add-search" type='text' class="button-inside add-bar" placeholder="Add Course" />
+                                    <div id="add-button" type='text' class="button-inside active">Add Course</div>
+                                    <input id="add-box" type='text' class="button-inside add-bar" placeholder="Course Name" />
 
                                 </div>
-                                <div class="add-button add-close add-bar">X</div>
+                                <div class="add-button add-close add-bar">x</div>
                             </div>
-                            <div class="add-results">
-                                <ul class="add-results-list">
+                            <div id="add-results">
+                                 <ul id="add-results-list">
+ <!--                                   <li>PHYS 42 - ELECTRICITY & MAGNETISM</li>
+                                    <li>SPAN 1 - ELEMENTARY SPANISH-1</li>
+                                    <li>HIST 4.2 - WEST CIV FROM 1648 C.E</li>
                                     <li>phys 40</li>
                                     <li>phys 40</li>
                                     <li>phys 40</li>
                                     <li>phys 40</li>
                                     <li>phys 40</li>
+                                    <li>phys 40</li>_
                                     <li>phys 40</li>
                                     <li>phys 40</li>
                                     <li>phys 40</li>
-                                    <li>phys 40</li>
-                                    <li>phys 40</li>
-                                </ul>
+                                    <li>phys 40</li>-->
+                                </ul> 
                             </div>
                         </div>
                         <div id="course-panel">
-<!-- 
+                            <!-- 
                             <div class="course-wrap">
                                 <div class="course-header class-removed">
                                     <div class="course-title">CHEM 1B</div>
@@ -431,8 +438,8 @@
                 </div>
                 <div id="footer"></div>
             </div>
-            <script src="js/build/main.min.js"></script>
 
     </body>
+    <script src="js/build/main.min.js"></script>
 
 </html>

@@ -1,6 +1,7 @@
 module.exports = {
   options: {
     livereload: true,
+    debounceDelay: 2000,
   },
   scripts: {
     files: ['js/*.js'],
@@ -10,7 +11,7 @@ module.exports = {
     }
   },
   css: {
-    files: ['css/build/*.css'],
+    files: ['css/build/styles.css'],
     tasks: [/*'sass', */'autoprefixer', 'cssmin'],
     options: {
       spawn: false,

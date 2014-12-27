@@ -21,6 +21,33 @@ $font-directory:'../../fonts/';
     font-weight: normal;
     font-style: normal;
 }
+
+
+
+@font-face {
+    font-family: 'Icon';
+    src:url('#{$font-directory}i-r.eot?-5c11y6');
+    src:url('#{$font-directory}i-r.eot?#iefix-5c11y6') format('embedded-opentype'),
+        url('#{$font-directory}i-r.woff?-5c11y6') format('woff'),
+        url('#{$font-directory}i-r.ttf?-5c11y6') format('truetype'),
+        url('#{$font-directory}i-r.svg?-5c11y6#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Icon';
+    src:url('#{$font-directory}i-b.eot?-5c11y6');
+    src:url('#{$font-directory}i-b.eot?#iefix-5c11y6') format('embedded-opentype'),
+        url('#{$font-directory}i-b.woff?-5c11y6') format('woff'),
+        url('#{$font-directory}i-b.ttf?-5c11y6') format('truetype'),
+        url('#{$font-directory}i-b.svg?-5c11y6#icomoon') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+
 html,
 body {
     margin: 0;
@@ -53,13 +80,14 @@ body {
     font-weight: 300;
 }
 #header img{
-    height:40px;
+    height:36px;
 }
 #main {
     background: skyblue;
     flex: 1 1;
     display: flex;
     overflow: hidden;
+    min-width: 1000px;
 }
 #footer {
     box-sizing: border-box;
@@ -69,7 +97,6 @@ body {
 }
 #first-panel {
     background: cyan;
-    flex: 7 7;
     display: flex;
     flex-direction: column;
 }
@@ -86,7 +113,7 @@ body {
     background: yellowgreen;
     flex: 3 7;
     border: 0 solid black;
-    border-width: 0 1px;
+    border-left-width: 1px;
     display: flex;
     flex-direction: column;
     min-width: 265px;
@@ -101,6 +128,8 @@ body {
     display: flex;
     flex-direction: column;
     min-width: 230px;
+        border: 0 solid black;
+    border-left-width: 1px;
 }
 #course-panel {
     background: #F5F5F5;
