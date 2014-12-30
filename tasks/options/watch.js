@@ -25,8 +25,8 @@ module.exports = {
     }
   },
   html:{
-    files: ['./**/*.html'],
-    tasks: [],
+    files: ['index.html'],
+    tasks: ['htmlmin'],
     options: {
       spawn: false
     }

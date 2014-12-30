@@ -41,27 +41,56 @@ console.log( "Course.js loaded" );
 
 
 var styleIndex = 0;
+// var Styles_ = [
+//     new Style( 2, 79, 57 ),
+//     new Style( 108, 61, 54 ),
+//     new Style( 197, 56, 56 ),
+//     new Style( 295, 67, 63 ),
+//     new Style( 40, 64, 58 ),
+//     new Style( 150, 50, 52 ),
+//     new Style( 271, 52, 70 ),
+//     new Style( 18, 76, 56 ),
+//     new Style( 221, 63, 65 ),
+//     new Style( 75, 53, 47 ),
+//     new Style( 176, 61, 47 ),
+//     new Style( 47, 80, 53 ),
+//     new Style( 352, 80, 64 ),
+//     new Style( 113, 40, 45 ),
+//     new Style( 188, 70, 54 ),
+//     new Style( 96, 80, 47 ),
+//     new Style( 330, 71, 65 ),
+//     new Style( 31, 70, 52 ),
+//     new Style( 216, 51, 65 ),
+//     new Style( 250, 79, 71 )
+// ];
+
 var Styles_ = [
-    new Style( 2, 79, 57 ),
-    new Style( 108, 61, 54 ),
-    new Style( 197, 56, 56 ),
-    new Style( 295, 67, 63 ),
-    new Style( 40, 64, 58 ),
-    new Style( 150, 50, 52 ),
-    new Style( 271, 52, 70 ),
-    new Style( 18, 76, 56 ),
-    new Style( 221, 63, 65 ),
-    new Style( 75, 53, 47 ),
-    new Style( 176, 61, 47 ),
-    new Style( 47, 80, 53 ),
-    new Style( 352, 80, 64 ),
-    new Style( 113, 40, 45 ),
-    new Style( 188, 70, 54 ),
-    new Style( 96, 80, 47 ),
-    new Style( 330, 71, 65 ),
-    new Style( 31, 70, 52 ),
-    new Style( 216, 51, 65 ),
-    new Style( 250, 79, 71 )
+    
+    new Style( 2, 75, 57 ), //red
+    new Style( 105, 66, 54 ), // green
+    new Style( 198, 65, 56 ), // blue
+    // new Style( 5, 82, 64 ),
+    // new Style( 114, 85, 59 ),
+    // new Style( 226, 91, 70 ),
+    new Style( 44, 78, 54 ), //gold
+    new Style( 286, 73, 62 ), // magenta
+    new Style( 142, 61, 52 ), //green blue
+    new Style( 26, 80, 52 ), // orange
+    new Style( 258, 70, 68 ), // purp
+    new Style( 60, 74, 52 ), // yellow
+    new Style( 309, 77, 67 ), // pink
+
+    new Style( 184, 70, 57 ), // sky blue
+    new Style( 115, 47, 51 ), // darker green
+
+    new Style( 352, 80, 66 ), // light red
+    new Style( 47, 80, 53 ), // goldenrod
+    new Style( 96, 80, 58 ), // light green
+    //new Style( 330, 71, 65 ),
+    new Style( 33, 70, 58 ), // light orange
+    new Style( 216, 51, 65 ), // light blue purple
+    new Style( 240, 79, 70 )
+
 ];
 
 function Style( hue, sat, lit )
@@ -107,7 +136,7 @@ function Course( courseTitle )
     // private //
     this._NextStlye = function()
     {
-        if ( styleIndex === 20 )
+        if ( styleIndex === 18 )
         {
             styleIndex = 0;
         }
@@ -117,7 +146,7 @@ function Course( courseTitle )
 
     this.RefreshStyle = function()
     {
-        self.$div.css( 'background', 'hsl(' + this.style.hue + ', ' + ( this.style.sat - 10 ) + '%, ' + ( this.style.lit + 25 ) + '%)' );
+        self.$div.css( 'background', 'hsl(' + this.style.hue + ', ' + ( this.style.sat - 9 ) + '%, ' + ( this.style.lit + 26 ) + '%)' );
 
         var classesLen = self.classes_.length;
         for ( var i = 0; i < classesLen; i++ )
@@ -151,7 +180,7 @@ function Course( courseTitle )
         setTimeout( function()
         {
             $courseDiv.removeClass( 'hide' );
-        }, 1 );
+        }, 20 );
 
 
         return $courseDiv;
@@ -628,11 +657,10 @@ function Course( courseTitle )
 
 
 
-console.log( "Class.js loaded" );
+console.log("Class.js loaded");
 
 
-function Class()
-{
+function Class() {
     this.active = false; // drawn on screen
     this.hover = false;
     this.press = false;
@@ -647,118 +675,113 @@ function Class()
     this.$parent = null; // course div
     this.parent = null;
     this.style = null;
+    this.classDiv = null;
 
     var self = this;
 
-    this.Init = function( courseObj )
-    {
+    this.Init = function(courseObj) {
         self.parent = courseObj;
         self.$parent = courseObj.$div;
         self.style = courseObj.style;
-        self.$div = self.AddClassElement( self, self.$parent );
+        self.$div = self.AddClassElement(self, self.$parent);
         self.BindEvents();
+        self.classDiv = new self.ClassDiv();
     };
 
-    this.BindEvents = function()
-    {
-        self.$div.mouseenter( function()
-        {
+    this.BindEvents = function() {
+        self.$div.mouseenter(function() {
             self.hover = true;
 
             self.RefreshStyle();
             self.PopulateInfo();
-            console.info( self.sect + "mouseenter" );
+            console.info(self.sect + "mouseenter");
+
+            if (!self.active) {
+                self.DrawClass();
+            }
+            
 
             //console.log( "mouseenter class-button" );
-        } );
+        });
 
-        self.$div.mouseleave( function()
-        {
+        self.$div.mouseleave(function() {
             self.hover = false;
             self.press = false;
 
             self.RefreshStyle();
-            console.info( self.sect + "mouseleave" );
+            console.info(self.sect + "mouseleave");
+
+            if (!self.active) {
+                self.HideClass();
+            }
 
             //console.log( "mouseenter class-button" );
-        } );
+        });
 
-        self.$div.mouseup( function()
-        {
+        self.$div.mouseup(function() {
             self.press = false;
 
             self.RefreshStyle();
-            console.info( self.sect + "mouseup" );
+            console.info(self.sect + "mouseup");
 
             //console.log( "mouseenter class-button" );
-        } );
+        });
 
-        self.$div.mousedown( function()
-        {
+        self.$div.mousedown(function() {
             self.press = true;
 
             self.RefreshStyle();
-            console.info( self.sect + "mousedown" );
+            console.info(self.sect + "mousedown");
 
             //console.log( "mouseenter class-button" );
-        } );
+        });
 
-        self.$div.click( function()
-        {
+        self.$div.click(function() {
             self.ToggleActive();
-            console.info( self.sect + "mouseclick" );
+            console.info(self.sect + "mouseclick");
 
             //console.log( "mouseenter class-button" );
-        } );
+        });
 
     };
 
-    this.AddClassElement = function( classObj, $courseDiv )
-    {
-        var $classDiv = $( "<div/>",
-        {
+    this.AddClassElement = function(classObj, $courseDiv) {
+        var $classDiv = $("<div/>", {
             class: "class-button class-mini"
-        } );
+        });
 
-        $classDiv.data( "class", classObj );
+        $classDiv.data("class", classObj);
 
-        $classDiv.append( '<span class="class-title">' +
-            ( classObj.sect + ' - ' + classObj.sessions_[ 0 ].instructor ) +
+        $classDiv.append('<span class="class-title">' +
+            (classObj.sect + ' - ' + classObj.sessions_[0].instructor) +
             '</span> <div class="class-close-button">x</div>'
         );
 
-        $courseDiv.children( ".class-wrap" ).append( $classDiv );
-        setTimeout( function()
-        {
-            $classDiv.removeClass( 'class-mini' );
-        }, 1 );
+        $courseDiv.children(".class-wrap").append($classDiv);
+        setTimeout(function() {
+            $classDiv.removeClass('class-mini');
+        }, 1);
 
         return $classDiv;
     };
 
-    this.ToggleActive = function( active )
-    {
-        if ( active === undefined )
-        {
+    this.ToggleActive = function(active) {
+        if (active === undefined) {
             self.active = !self.active;
-            this.ToggleActive( self.active );
-        }
-        else
-        {
+            this.ToggleActive(self.active);
+        } else {
             var classes_ = self.parent.classes_;
             var classesLen = classes_.length;
-            var classe = null;
-            var i =0;
-            if ( active )
-            {
-                
-                for ( i = 0; i < classesLen; i++ )
-                {
-                    classe = classes_[ i ];
-                    if ( classe.active )
-                    {
-                        classe.active = false;
-                        classe.RefreshStyle();
+            var clas = null;
+            var i = 0;
+            if (active) {
+
+                for (i = 0; i < classesLen; i++) {
+                    clas = classes_[i];
+                    if (clas.active) {
+                        clas.active = false;
+                        clas.RefreshStyle();
+                        clas.HideClass();
                     }
                 }
 
@@ -766,16 +789,13 @@ function Class()
                 self.RefreshStyle();
                 self.DrawClass();
 
-            }
-            else
-            {
-                for ( i = 0; i < classesLen; i++ )
-                {
-                    classe = classes_[ i ];
-                    if ( classe.active )
-                    {
-                        classe.active = false;
-                        classe.RefreshStyle();
+            } else {
+                for (i = 0; i < classesLen; i++) {
+                    clas = classes_[i];
+                    if (clas.active) {
+                        clas.active = false;
+                        clas.RefreshStyle();
+                        clas.HideClass();
                     }
                 }
 
@@ -783,76 +803,111 @@ function Class()
         }
     };
 
-    this.RefreshStyle = function()
-    {
-        if ( self.press )
-        {
-            self.$div.css( 'background', 'hsl(' + ( self.style.hue ) + ', ' + ( self.style.sat + 20 ) + '%, ' + ( self.style.lit - 10 ) + '%)' );
-        }
-        else if ( self.active )
-        {
-            self.$div.css( 'background', 'hsl(' + ( self.style.hue ) + ', ' + ( self.style.sat + 35 ) + '%, ' + ( self.style.lit + 7 ) + '%)' );
-        }
-        else if ( self.hover )
-        {
-            self.$div.css( 'background', 'hsl(' + ( self.style.hue ) + ', ' + ( self.style.sat + 25 ) + '%, ' + ( self.style.lit + 20 ) + '%)' );
-        }
-        else
-        {
-            self.$div.css( 'background', 'hsl(' + ( self.style.hue ) + ', ' + ( self.style.sat - 25 ) + '%, ' + ( self.style.lit + 20 ) + '%)' );
+    this.RefreshStyle = function() {
+        if (self.press) {
+            self.$div.css('background', 'hsl(' + (self.style.hue) + ', ' + (self.style.sat + 20) + '%, ' + (self.style.lit - 10) + '%)');
+        } else if (self.active) {
+            self.$div.css('background', 'hsl(' + (self.style.hue) + ', ' + (self.style.sat + 35) + '%, ' + (self.style.lit + 7) + '%)');
+        } else if (self.hover) {
+            self.$div.css('background', 'hsl(' + (self.style.hue) + ', ' + (self.style.sat + 25) + '%, ' + (self.style.lit + 20) + '%)');
+        } else {
+            self.$div.css('background', 'hsl(' + (self.style.hue) + ', ' + (self.style.sat - 25) + '%, ' + (self.style.lit + 20) + '%)');
         }
     };
 
-    this.DrawClass = function()
-    {
-        for ( var i = 0; i < self.sessions_.length; i++ )
-        {
-            self.DrawSession( i );
-        }
+    this.DrawClass = function() {
+        srjc.canvas.ClassAdd(self.classDiv);
+    };
+
+    this.HideClass = function() {
+        srjc.canvas.ClassRemove(self.classDiv);
     };
 
 
-    this.DrawSession = function( sessionNum )
-    {
-        for ( var day = 0; day < 7; day++ )
-        {
-            if ( self.sessions_[ sessionNum ].days_[ day ] == 1 )
-            {
-                srjc.canvas.SessionAdd( new self.SessionDiv( self, day, self.sessions_[ sessionNum ].dateStart,
-                    self.sessions_[ sessionNum ].dateEnd,
-                    self.sessions_[ sessionNum ].timeStart,
-                    self.sessions_[ sessionNum ].timeEnd,
-                    self.style ) );
+
+    this.DrawSession = function(sessionNum) {
+        for (var day = 0; day < 7; day++) {
+            if (self.sessions_[sessionNum].days_[day] == 1) {
+                srjc.canvas.SessionAdd(new self.SessionDiv(self, day, self.sessions_[sessionNum].dateStart,
+                    self.sessions_[sessionNum].dateEnd,
+                    self.sessions_[sessionNum].timeStart,
+                    self.sessions_[sessionNum].timeEnd,
+                    self.style));
             }
         }
     };
 
-    this.SessionDiv = function( parent , day, dateStart, dateEnd, timeStart, timeEnd, style )
-    {
-        this.parent = parent;
-        this.x = 0;
+    // public //
+    this.ClassDiv = function() {
+        this.parent = self.parent;
+        this.current = false;
+        this.$divs_ = [];
+
+        this.sessionDivs_ = [];
+
+        var sessionsLen = self.sessions_.length;
+
+        for (var i = 0; i < sessionsLen; i++) {
+            this.sessionDivs_.push(new self.SessionDiv(self.sessions_[i]));
+        }
+
+
+
+
+    };
+
+    this.SessionDiv = function(session) {
+        var semStart, semEnd;
+
+        if (session.dateStart < 152) {
+            semStart = SPRING_START;
+            semEnd = SPRING_END;
+        } else if (session.dateStart < 213) {
+            semStart = SUMMER_START;
+            semEnd = SUMMER_END;
+        } else {
+            semStart = FALL_START;
+            semEnd = FALL_END;
+        }
+
+        this.widthPre = Math.max(2, session.dateEnd - session.dateStart) +
+            Math.min(session.dateStart - semStart, 0) -
+            Math.max(session.dateEnd - semEnd, 0);
+        //console.log( "widthPre " + this.widthPre );
+
+        this.xPre = Math.max(session.dateStart - semStart, 0);
+        // console.log( "xPre " + this.xPre );
+
+        this.heightPre = session.timeEnd - session.timeStart;
+        this.semLen = (semEnd - semStart);
+
+
+
+        this.parent = self.classDiv;
+        this.session = session;
+        this.x_ = [];
         this.y = 0;
         this.width = 0;
         this.height = 0;
+        this.current = false;
+
+        this.style = self.style;
+
         this.innerColor = '';
         this.borderColor = 'black';
         this.borderWidth = '1px';
-
-        this.current = false;
-
-        this.day = day;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.timeStart = timeStart;
-        this.timeEnd = timeEnd;
-        this.style = style;
+        this.days_ = session.days_;
+        //this.dateStart = dateStart;
+        // this.dateEnd = dateEnd;
+        this.timeStart = session.timeStart;
+        // this.timeEnd = timeEnd;
+        // this.style = style;
     };
 
     // public //
-    this.PopulateInfo = function () 
-    {
-        srjc.info.PopulateInfo( self );
-    
+    this.PopulateInfo = function() {
+        srjc.info.PopulateInfo(self);
+
     };
 
 }
@@ -880,190 +935,238 @@ function Session()
 
 
 
-console.log( "Canvas.js loaded" );
+console.log("Canvas.js loaded");
 
 
-function Canvas()
-{
+function Canvas() {
 
     var self = this;
-    var cellW = 0, cellH = 0;
-    var sessions_ = [];
+    var cellW = 0,
+        cellH = 0;
+    var classes_ = [];
 
     var _ = {
-        main: $( "#main" ),
-        canvas: $( "#canvas" ),
-        table: $( "#time-table" ),
-        timesheet: $( "#timesheet" ),
-        firstPanel: $( "#first-panel" ),
-        firstCell: $( "#time-table tr:first-child th:first-child" ),
-        cells: $( "#time-table tr:first-child th:not(th:first-child)" ),
-        rows: $( "#time-table tr"),
-        footer:  $( '#footer' ),
+        main: $("#main"),
+        canvas: $("#canvas"),
+        table: $("#time-table"),
+        timesheet: $("#timesheet"),
+        firstPanel: $("#first-panel"),
+        firstCell: $("#time-table tr:first-child th:first-child"),
+        cells: $("#time-table tr:first-child th:not(th:first-child)"),
+        rows: $("#time-table tr"),
+        footer: $('#footer'),
 
 
     };
 
-    this.Init = function()
-    {
+    this.Init = function() {
         self.BindEvents();
+        $("#main>div ").css("display", "flex");
+        _.main.css("opacity", "1");
+        $(".spinner").hide();
         self.Redraw();
     };
 
-    this.BindEvents = function()
-    {
-        $( window ).on( "resize", function()
-        {
+    this.BindEvents = function() {
+        $(window).on("resize", function() {
             self.Redraw();
-            self.SessionsUpdate( true );
-        } );
+            self.Clear();
+            self.ClassesUpdate(true);
+        });
     };
 
 
     // public //
-    this.Clear = function()
-    {
-        _.canvas.html( "" ); // remove all class divs
+    this.Clear = function() {
+        _.canvas.html(""); // remove all class divs
     };
 
     // public //
-    this.Redraw = function()
-    {
-        $( '#footer' ).outerHeight( 30 + 'px' );
+    this.Redraw = function() {
+        $('#footer').outerHeight(30 + 'px');
 
         var mainW = _.main.width();
-        cellW = Math.ceil( ( mainW * 0.5 - 47 ) / 7 );
-        cellH = Math.floor( ( _.timesheet.height() ) / 19 );
+        cellW = Math.ceil((mainW * 0.5 - 47) / 7);
+        cellH = Math.floor((_.timesheet.height()) / 19);
 
-        _.firstCell.width( "40px" );
-        _.cells.width( cellW + "px" );
-        _.timesheet.width( ( cellW * 7 + 47 ) + "px" );
-        _.rows.height( cellH + "px" );
-        _.footer.outerHeight( ( 30 + Math.max( 0, ( Math.round( _.timesheet.height() ) - Math.round( _.table.height() ) ) ) ) + 'px' );
+        _.firstCell.width("40px");
+        _.cells.width(cellW + "px");
+        _.timesheet.width((cellW * 7 + 47) + "px");
+        _.rows.height(cellH + "px");
+        _.footer.outerHeight((30 + Math.max(0, (Math.round(_.timesheet.height()) - Math.round(_.table.height())))) + 'px');
 
 
-        if ( cellW <= 75 )
-        {
-            $( "th:nth-child(2) div" ).html( "Mon" );
-            $( "th:nth-child(3) div" ).html( "Tue" );
-            $( "th:nth-child(4) div" ).html( "Wed" );
-            $( "th:nth-child(5) div" ).html( "Thu" );
-            $( "th:nth-child(6) div" ).html( "Fri" );
-            $( "th:nth-child(7) div" ).html( "Sat" );
-            $( "th:nth-child(8) div" ).html( "Sun" );
-        }
-        else
-        {
-            $( "th:nth-child(2) div" ).html( "Monday" );
-            $( "th:nth-child(3) div" ).html( "Tuesday" );
-            $( "th:nth-child(4) div" ).html( "Wedneday" );
-            $( "th:nth-child(5) div" ).html( "Thursday" );
-            $( "th:nth-child(6) div" ).html( "Friday" );
-            $( "th:nth-child(7) div" ).html( "Saturday" );
-            $( "th:nth-child(8) div" ).html( "Sunday" );
+        if (cellW <= 75) {
+            $("th:nth-child(2) div").html("Mon");
+            $("th:nth-child(3) div").html("Tue");
+            $("th:nth-child(4) div").html("Wed");
+            $("th:nth-child(5) div").html("Thu");
+            $("th:nth-child(6) div").html("Fri");
+            $("th:nth-child(7) div").html("Sat");
+            $("th:nth-child(8) div").html("Sun");
+        } else {
+            $("th:nth-child(2) div").html("Monday");
+            $("th:nth-child(3) div").html("Tuesday");
+            $("th:nth-child(4) div").html("Wedneday");
+            $("th:nth-child(5) div").html("Thursday");
+            $("th:nth-child(6) div").html("Friday");
+            $("th:nth-child(7) div").html("Saturday");
+            $("th:nth-child(8) div").html("Sunday");
         }
 
 
     };
 
     // public //
-    this.SessionAdd = function ( sessionDiv ) 
-    {
-        sessions_.push( sessionDiv );
-        self.SessionUpdate( sessionDiv );
+    this.ClassAdd = function(classDiv) {
+
+        if ($.inArray(classDiv, classes_) <= -1) {
+            classes_.push(classDiv);
+        }
+
+        self.ClassUpdate(classDiv);
+    };
+
+    this.ClassRemove = function(classDiv) {
+        var index = $.inArray(classDiv, classes_);
+
+        if (index > -1) {
+            $.each(classes_[index].$divs_, function(ind, value) {
+                value.remove();
+            });
+            classes_.splice(index, 1);
+        }
+
+        //self.ClassUpdate(classDiv);
+    };
+
+
+
+    // public //
+    this.SessionAdd = function(sessionDiv) {
+        sessions_.push(sessionDiv);
+        self.SessionUpdate(sessionDiv);
 
     };
 
+
     // public //
-    this.SessionsUpdate = function( force) 
-    {
-        var sessionsLen = sessions_.length;
-        _.canvas.html("");
+    this.ClassesUpdate = function(forceUpdate) {
+        var classesLen = classes_.length;
+
+        for (var i = 0; i < classesLen; i++) {
+            if (!classes_[i].current || forceUpdate) {
+                self.ClassUpdate(classes_[i]);
+            }
+
+        }
+    };
+
+    // public //
+    this.ClassUpdate = function(classDiv) {
+        var sessionsLen = classDiv.sessionDivs_.length;
+        //_.canvas.html("");
+
+        var $divs_ = [];
+        var divsLen = 0;
 
         for (var i = 0; i < sessionsLen; i++) {
-            if ( !sessions_[ i ].current || force )
-            {
-                self.SessionUpdate( sessions_[ i ] );
+            $divs_ = self.SessionUpdate(classDiv.sessionDivs_[i]);
+
+            divsLen = $divs_.length;
+
+            for (var j = 0; j < divsLen; j++) {
+                classDiv.$divs_.push( $divs_.pop() );
             }
+
+
+
         }
     };
 
-    this.SessionUpdate = function( sessionDiv )
-    {
-        var semStart, semEnd;
+    this.SessionUpdate = function(sessionDiv) {
 
-        if ( sessionDiv.dateStart < 152 )
-        {
-            semStart = SPRING_START;
-            semEnd = SPRING_END;
+
+        // var width = Math.max(2, sessionDiv.dateEnd - sessionDiv.dateStart) + Math.min(sessionDiv.dateStart - semStart, 0) - Math.max(sessionDiv.dateEnd - semEnd, 0);
+        // console.log(width + "width 1");
+
+        // var dateStart = Math.max(sessionDiv.dateStart - semStart, 0);
+        // console.log(dateStart + "dateStart");
+
+        // sessionDiv.x = 40 + (cellW + 1) * sessionDiv.day + dateStart * (cellW / (semEnd - semStart));
+        // console.log(sessionDiv.x + "x");
+
+        // sessionDiv.y = cellH + (sessionDiv.timeStart) * (cellH / 60) - 1;
+        // console.log(sessionDiv.y + "y");
+
+        // sessionDiv.width = width * (cellW / (semEnd - semStart));
+        // console.log(sessionDiv.width + "width 2");
+
+        // sessionDiv.height = (sessionDiv.timeEnd - sessionDiv.timeStart) * (cellH / 60) - 1;
+        // console.log(sessionDiv.height + "height");
+
+        var daysLen = sessionDiv.days_.length;
+        sessionDiv.x_.splice(0, sessionDiv.x_.length);
+
+        for (var i = 0; i < daysLen; i++) {
+            if (sessionDiv.days_[i] === 1) {
+                sessionDiv.x_.push(40 + (cellW + 1) * i + sessionDiv.xPre * (cellW / sessionDiv.semLen));
+            }
         }
-        else if ( sessionDiv.dateStart < 213 )
-        {
-            semStart = SUMMER_START;
-            semEnd = SUMMER_END;
-        }
-        else
-        {
-            semStart = FALL_START;
-            semEnd = FALL_END;
-        }
 
-        var width = Math.max( 7, Math.min( sessionDiv.dateEnd - sessionDiv.dateStart, semEnd - semStart ) ) + Math.min( sessionDiv.dateStart - semStart, 0 ) - Math.max( sessionDiv.dateEnd - semEnd, 0 );
-        console.log( width + "width 1" );
+        sessionDiv.y = cellH + (sessionDiv.timeStart) * (cellH / 60) - 1;
+       // console.log(sessionDiv.y + "y");
 
-        var dateStart = Math.min( Math.max( sessionDiv.dateStart - semStart, 0 ), semEnd - semStart - width );
-        console.log( dateStart + "dateStart" );
+        sessionDiv.width = sessionDiv.widthPre * (cellW / sessionDiv.semLen);
+       // console.log(sessionDiv.width + "width 2");
 
-        sessionDiv.x = 40 + ( cellW + 1 ) * sessionDiv.day + dateStart * ( cellW / ( semEnd - semStart ) );
-        console.log( sessionDiv.x + "x" );
+        sessionDiv.height = sessionDiv.heightPre * (cellH / 60) - 1;
+      //  console.log(sessionDiv.height + "height");
 
-        sessionDiv.y = cellH + ( sessionDiv.timeStart ) * ( cellH / 60 ) - 1;
-        console.log( sessionDiv.y + "y" );
-
-        sessionDiv.width = width * ( cellW / ( semEnd - semStart ) );
-        console.log( sessionDiv.width + "width 2" );
-
-        sessionDiv.height = ( sessionDiv.timeEnd - sessionDiv.timeStart ) * ( cellH / 60 ) - 1;
-        console.log( sessionDiv.height + "height" );
-
-        sessionDiv.innerColor = 'hsla(' + ( sessionDiv.style.hue ) + ', ' + ( sessionDiv.style.sat ) + '%, ' + ( sessionDiv.style.lit ) + '%,' + ( sessionDiv.style.alf ) + ')';
+        sessionDiv.innerColor = 'hsla(' + (sessionDiv.style.hue) + ', ' + (sessionDiv.style.sat + 25) + '%, ' + (sessionDiv.style.lit + 5) + '%,' + (sessionDiv.style.alf) + ')';
         sessionDiv.current = true;
 
-        self.SessionDraw( sessionDiv );
+        return ( self.SessionDraw(sessionDiv) );
 
     };
 
 
 
     // private //
-    this.SessionDraw = function( sessionDiv )
-    {
-        var $div = $( "<div/>",
-        {
-            class: "drawClass",
-        } ); // create a course div
+    this.SessionDraw = function(sessionDiv) {
+        var xLen = sessionDiv.x_.length;
+        var $divs_ = [];
 
-        $div.width( sessionDiv.width + "px" );
-        $div.height( sessionDiv.height + "px" );
+        for (var i = 0; i < xLen; i++) {
 
-        $div.css( "top", sessionDiv.y + "px" );
-        $div.css( "left", sessionDiv.x + "px" );
+            var $div = $("<div/>", {
+                class: "drawClass",
+            }); // create a course div
 
-        $div.css( "box-shadow", "inset 0 0 0 1000px " + sessionDiv.innerColor );
-        $div.css( "border-color", sessionDiv.borderColor );
-        $div.css( "border-width", sessionDiv.borderWidth + "px" );
+            $div.width(sessionDiv.width + "px");
+            $div.height(sessionDiv.height + "px");
+
+            $div.css("top", sessionDiv.y + "px");
+            $div.css("left", sessionDiv.x_[i] + "px");
+
+            $div.css("box-shadow", "inset 0 0 0 1000px " + sessionDiv.innerColor);
+            $div.css("border-color", sessionDiv.borderColor);
+            $div.css("border-width", sessionDiv.borderWidth + "px");
 
 
-        /*
-        if ( info !== undefined )
-        {
-            $div.html( "<div><p>" + info + "</p></div>" );
-            $div.data( "parent", parent ); // bind class object to button
-            $div.data( "sessionNum", sessionNum );
+            /*
+            if ( info !== undefined )
+            {
+                $div.html( "<div><p>" + info + "</p></div>" );
+                $div.data( "parent", parent ); // bind class object to button
+                $div.data( "sessionNum", sessionNum );
+            }
+            */    
+            $divs_.push( $div);       
+            _.canvas.append($div);
         }
-        */
 
-        _.canvas.append( $div );
+        return ($divs_);
     };
 
 
@@ -1378,7 +1481,7 @@ function Add()
 		var searchLen = search.length;
 
 
-		console.log( search );
+		//console.log( search );
 
 		for ( var i = 0; i < len; i++ )
 		{
@@ -1389,7 +1492,7 @@ function Add()
 				results_.push( value );
 			}
 		}
-		console.log( results_ );
+		//console.log( results_ );
 		self.CreateResultsList( results_ );
 
 	};
@@ -1443,8 +1546,8 @@ console.log("Button.js loaded");
 
 console.log( "Main.js loaded" );
 
- var SPRING_START = MonthToDay( 1 ) + 12; // January 1
- var SPRING_END = MonthToDay( 5 ) + 12; // May 10
+ var SPRING_START = MonthToDay( 1 ) + 19; // January 1
+ var SPRING_END = MonthToDay( 5 ) + 8; // May 10
 
  var SUMMER_START = MonthToDay( 6 ) + 20; // june 20
  var SUMMER_END = MonthToDay( 7 ) + 27; // july 27
@@ -1475,9 +1578,9 @@ function SRJC()
 
     $( '.b-restart>div>div' ).click( function()
     {
-        //var temp_ = ["<5048―TTh┃T―9:00 am - 10:30 am┃11:15 am - 2:15 pm―Brumbaugh S┃Brumbaugh S―2004┃1869―4.00―Closed―0―01/13-05/14┃01/13-05/14―5/21/2015―>","<5049―TTh┃Th―9:00 am - 10:30 am┃11:15 am - 2:15 pm―Brumbaugh S┃Brumbaugh S―2004┃1869―4.00―Closed―0―01/13-05/14┃01/13-05/14―5/21/2015―>","<5051―TTh┃T―12:00 pm - 1:30 pm┃2:30 pm - 5:30 pm―Zoger A┃Zoger A―2004┃1869―4.00―Closed―0―01/13-05/14┃01/13-05/14―5/21/2015―>"];
-        //schedule.AddCourse( temp_, "MATH 2", 1 );
-        self.add.RequestCourseData( "PHYS 40" );
+        var temp_ = ["<4105―M―6:00 pm - 8:00 pm―Harris B―2913―1.50―Open―13―01/12-05/11―5/18/2015―>"];
+        self.schedule.AddCourse( temp_, "MATH 2", 1 );
+        //self.add.RequestCourseData( "PHYS 40" );
     } );
 
 
@@ -1489,7 +1592,8 @@ var srjc = new SRJC();
 
 $( function() // document has been loaded
     {
-        srjc.Init();
+        setTimeout( function(){ srjc.Init(); } , 1 );
+       // srjc.Init();
     } );
 
 

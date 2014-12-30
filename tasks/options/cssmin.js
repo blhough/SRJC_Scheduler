@@ -1,7 +1,7 @@
 module.exports = {
   combine: {
     files: {
-      'css/build/styles.min.css': ['css/build/prefixed/styles.css']
+      'build/css/styles.css': ['css/build/prefixed/styles.css']
     }
   }
 }

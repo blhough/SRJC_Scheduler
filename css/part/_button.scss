@@ -3,6 +3,7 @@ $hue-add:188;
 $hue-cycle:85;
 $hue-print:216;
 $hue-restart:357;
+$hue-semester:23;
 $sat:60%;
 $sat-hover:50%;
 $sat-press:70%;
@@ -14,6 +15,9 @@ $light-press:50%;
     box-sizing: border-box;
     position: relative;
     font-family: calibri;
+    white-space: nowrap;
+    overflow: hidden;
+    //text-overflow: ellipsis;
     bottom: 0px;
     width: 100%;
     padding: 6px 10px;
@@ -54,6 +58,10 @@ $light-press:50%;
 }
 .p-18 {
     width: 18%;
+    float: left;
+}
+.p-33 {
+    width: 33.33%;
     float: left;
 }
 .p-64 {
@@ -119,6 +127,19 @@ $light-press:50%;
     }
     &:active {
         background-color: hsl($hue-add, $sat-press, $light-press);
+    }
+}
+
+.b-semester .button .button-inside {
+    background-color: hsl($hue-semester, $sat - 25, $light + 25);
+    &:hover {
+        background-color: hsl($hue-semester, $sat-hover - 25, $light-hover + 25);
+    }
+    &:active {
+        background-color: hsl($hue-semester, $sat-press - 25, $light-press + 25);
+    }
+    &.active {
+        background-color: hsl($hue-semester, $sat-press , $light-press + 12);
     }
 }
 

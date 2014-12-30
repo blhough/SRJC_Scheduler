@@ -49,3 +49,8 @@ sub-proj.sublime-workspace
 resources/
 mock-ups/
 css/.sass-cache/
+
+.ftppass
+
+build/
+node_modules/

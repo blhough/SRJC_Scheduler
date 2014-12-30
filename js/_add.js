@@ -220,7 +220,7 @@ function Add()
 		var searchLen = search.length;
 
 
-		console.log( search );
+		//console.log( search );
 
 		for ( var i = 0; i < len; i++ )
 		{
@@ -231,7 +231,7 @@ function Add()
 				results_.push( value );
 			}
 		}
-		console.log( results_ );
+		//console.log( results_ );
 		self.CreateResultsList( results_ );
 
 	};

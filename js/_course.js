@@ -4,27 +4,56 @@ console.log( "Course.js loaded" );
 
 
 var styleIndex = 0;
+// var Styles_ = [
+//     new Style( 2, 79, 57 ),
+//     new Style( 108, 61, 54 ),
+//     new Style( 197, 56, 56 ),
+//     new Style( 295, 67, 63 ),
+//     new Style( 40, 64, 58 ),
+//     new Style( 150, 50, 52 ),
+//     new Style( 271, 52, 70 ),
+//     new Style( 18, 76, 56 ),
+//     new Style( 221, 63, 65 ),
+//     new Style( 75, 53, 47 ),
+//     new Style( 176, 61, 47 ),
+//     new Style( 47, 80, 53 ),
+//     new Style( 352, 80, 64 ),
+//     new Style( 113, 40, 45 ),
+//     new Style( 188, 70, 54 ),
+//     new Style( 96, 80, 47 ),
+//     new Style( 330, 71, 65 ),
+//     new Style( 31, 70, 52 ),
+//     new Style( 216, 51, 65 ),
+//     new Style( 250, 79, 71 )
+// ];
+
 var Styles_ = [
-    new Style( 2, 79, 57 ),
-    new Style( 108, 61, 54 ),
-    new Style( 197, 56, 56 ),
-    new Style( 295, 67, 63 ),
-    new Style( 40, 64, 58 ),
-    new Style( 150, 50, 52 ),
-    new Style( 271, 52, 70 ),
-    new Style( 18, 76, 56 ),
-    new Style( 221, 63, 65 ),
-    new Style( 75, 53, 47 ),
-    new Style( 176, 61, 47 ),
-    new Style( 47, 80, 53 ),
-    new Style( 352, 80, 64 ),
-    new Style( 113, 40, 45 ),
-    new Style( 188, 70, 54 ),
-    new Style( 96, 80, 47 ),
-    new Style( 330, 71, 65 ),
-    new Style( 31, 70, 52 ),
-    new Style( 216, 51, 65 ),
-    new Style( 250, 79, 71 )
+    
+    new Style( 2, 75, 57 ), //red
+    new Style( 105, 66, 54 ), // green
+    new Style( 198, 65, 56 ), // blue
+    // new Style( 5, 82, 64 ),
+    // new Style( 114, 85, 59 ),
+    // new Style( 226, 91, 70 ),
+    new Style( 44, 78, 54 ), //gold
+    new Style( 286, 73, 62 ), // magenta
+    new Style( 142, 61, 52 ), //green blue
+    new Style( 26, 80, 52 ), // orange
+    new Style( 258, 70, 68 ), // purp
+    new Style( 60, 74, 52 ), // yellow
+    new Style( 309, 77, 67 ), // pink
+
+    new Style( 184, 70, 57 ), // sky blue
+    new Style( 115, 47, 51 ), // darker green
+
+    new Style( 352, 80, 66 ), // light red
+    new Style( 47, 80, 53 ), // goldenrod
+    new Style( 96, 80, 58 ), // light green
+    //new Style( 330, 71, 65 ),
+    new Style( 33, 70, 58 ), // light orange
+    new Style( 216, 51, 65 ), // light blue purple
+    new Style( 240, 79, 70 )
+
 ];
 
 function Style( hue, sat, lit )
@@ -70,7 +99,7 @@ function Course( courseTitle )
     // private //
     this._NextStlye = function()
     {
-        if ( styleIndex === 20 )
+        if ( styleIndex === 18 )
         {
             styleIndex = 0;
         }
@@ -80,7 +109,7 @@ function Course( courseTitle )
 
     this.RefreshStyle = function()
     {
-        self.$div.css( 'background', 'hsl(' + this.style.hue + ', ' + ( this.style.sat - 10 ) + '%, ' + ( this.style.lit + 25 ) + '%)' );
+        self.$div.css( 'background', 'hsl(' + this.style.hue + ', ' + ( this.style.sat - 9 ) + '%, ' + ( this.style.lit + 26 ) + '%)' );
 
         var classesLen = self.classes_.length;
         for ( var i = 0; i < classesLen; i++ )
@@ -114,7 +143,7 @@ function Course( courseTitle )
         setTimeout( function()
         {
             $courseDiv.removeClass( 'hide' );
-        }, 1 );
+        }, 20 );
 
 
         return $courseDiv;

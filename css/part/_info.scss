@@ -11,6 +11,11 @@
     overflow: auto;
     padding: 24px; 
     display: block;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
 }
 #info-panel div:not(.info-effect) {
     user-select: initial;

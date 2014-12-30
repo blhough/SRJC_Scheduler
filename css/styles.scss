@@ -4,9 +4,11 @@ $custom-module-height:30px;
 $button-panel-height:105px;
 $add-module-height:30px;
 $dark-gray:#373737;
-$root-directory:'../../';
-$font-directory:'../../fonts/';
+$root-directory:'../';
+$font-directory:'../fonts/';
 @import 'part/all';
+
+/*
 @font-face {
     font-family: 'Font';
     src: url('#{$font-directory}b.eot');
@@ -20,7 +22,7 @@ $font-directory:'../../fonts/';
     src: url('#{$font-directory}r.eot?#iefix') format('embedded-opentype'), url('#{$font-directory}r.woff2') format('woff2'), url('#{$font-directory}r.woff') format('woff'), url('#{$font-directory}r.ttf') format('truetype'), url('#{$font-directory}r.svg#merriweather_sanslight') format('svg');
     font-weight: normal;
     font-style: normal;
-}
+}*/
 
 
 
@@ -56,8 +58,8 @@ body {
     font-family: 'Calibri', serif;
 }
 #container {
-    background: #777;
-    background: url('#{$root-directory}/img/grey_wash_wall.png');
+    background: #F5F5F5;
+    //background: url('#{$root-directory}/img/grey_wash_wall.png');
     position: absolute;
     top: 0;
     bottom: 0;
@@ -67,6 +69,7 @@ body {
     min-height: 600px;
     display: flex;
     flex-direction: column;
+    //align-items:center;
 }
 #header {
     box-sizing: border-box;
@@ -83,11 +86,18 @@ body {
     height:36px;
 }
 #main {
-    background: skyblue;
+    background: #F5F5F5;
     flex: 1 1;
     display: flex;
-    overflow: hidden;
     min-width: 1000px;
+   // max-width: 1700px;
+    border: 0 solid black;
+    border-width: 0 2px;
+    opacity: 0;
+    transition: opacity .2s;
+}
+#main>div{
+    display: none;
 }
 #footer {
     box-sizing: border-box;
