@@ -15,6 +15,7 @@ module.exports = {
 	  'js/_add.js',
 	  'js/_button.js',
 	  'js/_custom.js',
+	  'js/_print.js',
 	  'js/main.js'
 	],
 	dest: 'js/build/production.js'

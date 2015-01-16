@@ -1478,7 +1478,9 @@ function Canvas()
     var cellW = 0,
         cellH = 0;
     var classes_ = [];
+    var panelsMinW = parseInt( $( "#second-panel" ).css( 'min-width' ) ) + parseInt( $( "#third-panel" ).css( 'min-width' ) ) + 2;
 
+    console.log( panelsMinW );
     var _ = {
         main: $( "#main" ),
         canvas: $( "#canvas" ),
@@ -1496,19 +1498,17 @@ function Canvas()
     this.Init = function()
     {
         self.BindEvents();
-        $( "#main>div " ).css( "display", "flex" );
-        _.main.css( "opacity", "1" );
+        $( "#main").removeClass('loading');
         $( ".spinner" ).hide();
         self.Redraw();
     };
 
     this.BindEvents = function()
     {
-        $( window ).on( "resize", function()
+        $( window ).resize( function()
         {
             self.Redraw();
             self.Clear();
-            self.ClassesUpdate( true );
         } );
     };
 
@@ -1525,7 +1525,7 @@ function Canvas()
         $( '#footer' ).outerHeight( 30 + 'px' );
 
         var mainW = _.main.width();
-        cellW = Math.ceil( ( mainW * 0.5 - 47 ) / 7 );
+        cellW = Math.floor( Math.min( ( mainW * 0.5 - 47 ) / 7, ( mainW - panelsMinW - 47 ) / 7 ) );
         cellH = Math.floor( ( _.timesheet.height() ) / 19 );
 
         _.firstCell.width( "40px" );
@@ -2199,7 +2199,7 @@ function Add()
             },
             error: function()
             {
-                console.log( "Server Error" );
+                console.warn( "error adding course" );
             }
         } );
     };
@@ -2507,6 +2507,36 @@ function EventSession()
 
 
 
+console.log( "Print.js loaded" );
+
+
+function Print()
+{
+    var self = this;
+
+    // elements 
+    /* private */
+    var _ = {
+        searchBox: $( "#add-box" ),
+    };
+
+
+    this.Init = function()
+    {
+        self.BindEvents();
+    };
+
+    this.BindEvents = function()
+    {
+        _.searchButton.click( function()
+        {
+            self.ToggleSearch( true );
+        } );
+    };
+}
+
+
+
 console.log( "Main.js loaded" );
 
 var SPRING_START = MonthToDay( 1 ) + 19; // January 1
@@ -2536,10 +2566,12 @@ function SRJC()
         self.info = new Info();
         self.add = new Add();
         self.custom = new Custom();
+        self.print = new Print();
 
         self.add.Init();
         self.custom.Init();
         self.canvas.Init();
+        self.print.Init();
     };
 
     $( '.b-restart>div>div' ).click( function()

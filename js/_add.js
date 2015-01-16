@@ -259,7 +259,7 @@ function Add()
             },
             error: function()
             {
-                console.log( "Server Error" );
+                console.warn( "error adding course" );
             }
         } );
     };

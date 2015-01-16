@@ -1,21 +1,15 @@
 #info-panel {
     background: #F5F5F5;
-    
     flex: 1 1;
     position: relative;
     overflow: hidden;
     display: flex;
 }
-#info{
-
+#info {
     overflow: auto;
-    padding: 24px; 
+    padding: 24px;
     display: block;
-    position: relative;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    top: 0;
+    width: 100%;
 }
 #info-panel div:not(.info-effect) {
     user-select: initial;
@@ -35,8 +29,7 @@
 .info-title {
     font-size: 2em;
 }
-.info-subtitle,
-.info-sect {
+.info-subtitle, .info-sect {
     font-size: 1.1em;
 }
 .info-session {
@@ -57,4 +50,3 @@
     opacity: 1;
     user-select: initial;
 }
-

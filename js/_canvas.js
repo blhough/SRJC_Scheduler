@@ -8,7 +8,9 @@ function Canvas()
     var cellW = 0,
         cellH = 0;
     var classes_ = [];
+    var panelsMinW = parseInt( $( "#second-panel" ).css( 'min-width' ) ) + parseInt( $( "#third-panel" ).css( 'min-width' ) ) + 2;
 
+    console.log( panelsMinW );
     var _ = {
         main: $( "#main" ),
         canvas: $( "#canvas" ),
@@ -26,19 +28,17 @@ function Canvas()
     this.Init = function()
     {
         self.BindEvents();
-        $( "#main>div " ).css( "display", "flex" );
-        _.main.css( "opacity", "1" );
+        $( "#main").removeClass('loading');
         $( ".spinner" ).hide();
         self.Redraw();
     };
 
     this.BindEvents = function()
     {
-        $( window ).on( "resize", function()
+        $( window ).resize( function()
         {
             self.Redraw();
             self.Clear();
-            self.ClassesUpdate( true );
         } );
     };
 
@@ -50,12 +50,12 @@ function Canvas()
     };
 
     // public //
-    this.Redraw = function()
+    this.Redraw = function( isPrint )
     {
         $( '#footer' ).outerHeight( 30 + 'px' );
 
         var mainW = _.main.width();
-        cellW = Math.ceil( ( mainW * 0.5 - 47 ) / 7 );
+        cellW = Math.floor( Math.min( ( mainW * 0.5 - 47 ) / 7, ( mainW - panelsMinW - 47 ) / 7 ) );
         cellH = Math.floor( ( _.timesheet.height() ) / 19 );
 
         _.firstCell.width( "40px" );

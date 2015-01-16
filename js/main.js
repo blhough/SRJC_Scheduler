@@ -27,10 +27,12 @@ function SRJC()
         self.info = new Info();
         self.add = new Add();
         self.custom = new Custom();
+        self.print = new Print();
 
         self.add.Init();
         self.custom.Init();
         self.canvas.Init();
+        self.print.Init();
     };
 
     $( '.b-restart>div>div' ).click( function()
