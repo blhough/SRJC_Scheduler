@@ -7,7 +7,6 @@ $dark-gray:#373737;
 $root-directory:'../';
 $font-directory:'../fonts/';
 @import 'part/all';
-
 /*
 @font-face {
     font-family: 'Font';
@@ -24,38 +23,32 @@ $font-directory:'../fonts/';
     font-style: normal;
 }*/
 
-
-
 @font-face {
     font-family: 'Icon';
     src:url('#{$font-directory}i-r.eot?-5c11y6');
-    src:url('#{$font-directory}i-r.eot?#iefix-5c11y6') format('embedded-opentype'),
-        url('#{$font-directory}i-r.woff?-5c11y6') format('woff'),
-        url('#{$font-directory}i-r.ttf?-5c11y6') format('truetype'),
-        url('#{$font-directory}i-r.svg?-5c11y6#icomoon') format('svg');
+    src:url('#{$font-directory}i-r.eot?#iefix-5c11y6') format('embedded-opentype'), url('#{$font-directory}i-r.woff?-5c11y6') format('woff'), url('#{$font-directory}i-r.ttf?-5c11y6') format('truetype'), url('#{$font-directory}i-r.svg?-5c11y6#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
-
 @font-face {
     font-family: 'Icon';
     src:url('#{$font-directory}i-b.eot?-5c11y6');
-    src:url('#{$font-directory}i-b.eot?#iefix-5c11y6') format('embedded-opentype'),
-        url('#{$font-directory}i-b.woff?-5c11y6') format('woff'),
-        url('#{$font-directory}i-b.ttf?-5c11y6') format('truetype'),
-        url('#{$font-directory}i-b.svg?-5c11y6#icomoon') format('svg');
+    src:url('#{$font-directory}i-b.eot?#iefix-5c11y6') format('embedded-opentype'), url('#{$font-directory}i-b.woff?-5c11y6') format('woff'), url('#{$font-directory}i-b.ttf?-5c11y6') format('truetype'), url('#{$font-directory}i-b.svg?-5c11y6#icomoon') format('svg');
     font-weight: bold;
     font-style: normal;
 }
-
-
-
-html,
-body {
+* {
+   // box-sizing: border-box;
+    font-family: Calibri, serif;
+}
+html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Calibri', serif;
+   
+}
+input{
+    font-size: 16px;
 }
 #container {
     background: #F5F5F5;
@@ -75,28 +68,32 @@ body {
     box-sizing: border-box;
     height: $header-height;
     width: 100%;
-    padding: 16px 30px 0 30px;
+    padding: 14px 30px 0 42px;
     background: $dark-gray;
     color: #ED0000;
     font-size: 2.1em;
     border-bottom: 2px solid black;
     font-weight: 300;
 }
-#header img{
-    height:36px;
+#header img {
+    height: 40px;
+    padding: 0 16px 0 0;
+}
+#header img:first-child {
+    height: 40px;
 }
 #main {
     background: #F5F5F5;
     flex: 1 1;
     display: flex;
     min-width: 1000px;
-   // max-width: 1700px;
+    // max-width: 1700px;
     border: 0 solid black;
     border-width: 0 2px;
     opacity: 0;
     transition: opacity .2s;
 }
-#main>div{
+#main>div {
     display: none;
 }
 #footer {
@@ -114,10 +111,6 @@ body {
     background: #F5F5F5;
     flex: 1 1;
     position: relative;
-}
-#custom-module {
-    background: #F5F5F5;
-    //border-top: 1px solid black;
 }
 #second-panel {
     background: yellowgreen;
@@ -138,7 +131,7 @@ body {
     display: flex;
     flex-direction: column;
     min-width: 230px;
-        border: 0 solid black;
+    border: 0 solid black;
     border-left-width: 1px;
 }
 #course-panel {
@@ -151,3 +144,7 @@ body {
     user-select: none;
 }
 
+
+.icon{
+    font-family: 'Icon';
+}

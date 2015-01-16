@@ -24,7 +24,7 @@ function Info()
 	{
 
 		var info = "";
-		var weekdays = "SMTWTFS";
+		var weekdays = "MTWTFSS";
 
 		info += '<div class="info-title">' + classe.parent.courseTitle + '</div>';
 		info += '<div class="info-subtitle">' + classe.parent.courseSubtitle + '</div>';
@@ -41,7 +41,7 @@ function Info()
 
 			for ( var j = 0; j < 7; j++ )
 			{
-				if ( session.days_[ j - 1 ] === 1 )
+				if ( session.days_[ j ] === 1 )
 				{
 					info += '<span class="info-day active" style="background:hsl(' + ( classe.style.hue ) + ', ' + ( classe.style.sat ) + '%, ' + ( classe.style.lit + 30 ) + '%)">' + weekdays.charAt( j ) + '</span>';
 				}

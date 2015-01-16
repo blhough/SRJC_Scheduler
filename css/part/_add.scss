@@ -70,12 +70,12 @@
     overflow-x: hidden;
     transition: height .2s, opacity .2s;
     border-top: 1px solid black;
-}
-#add-results.active {
-    height: 300px;
-    background: #EAEAEA;
-    opacity: 1;
-    box-shadow: 0 0 6px rgba(black, .2) inset;
+    &.active {
+        height: 300px;
+        background: #EAEAEA;
+        opacity: 1;
+        box-shadow: 0 0 6px rgba(black, .2) inset;
+    }
 }
 #add-results-list {
     margin: 0;
@@ -95,11 +95,14 @@
         cursor: pointer;
         text-align: left;
         background-size: 30px 30px;
-        transition: box-shadow .2s, padding-left .2s, background .2s;
-        
-        &:hover {
+        transition: box-shadow .2s, padding-left .2s, background .2s, border-width .2s;
+        &:hover, &.active {
             background: #FAFAFA;
             padding-left: 35px;
+        }
+        &.active{
+            border-left: 4px solid blue;
+             padding-left: 31px;
         }
         &:active {
             background: #DADADA;
@@ -112,11 +115,17 @@
         &.loaded {
             background: rgb(158, 234, 158);
             padding-left: 30px;
-            cursor:initial;
+            cursor: initial;
             &>span {
                 color: rgb(84, 141, 84);
             }
-
+        }
+        &.error {
+            background: rgb(234, 158, 158);
+            padding-left: 30px;
+            &>span {
+                color: rgb(141, 84, 84);
+            }
         }
         &>span {
             float: right;
@@ -134,8 +143,7 @@
         background-position: 60px 30px;
     }
 }
-
-#semester{
+#semester {
     position: relative;
     bottom: 48px;
     height: 0;

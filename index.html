@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+    <meta name=viewport content="height=device-height, width=device-width, initial-scale=1">
     <meta charset="utf-8">
 
     <title>SRJC Scheduler</title>
@@ -14,7 +15,7 @@
 
 <body>
     <div id="container">
-        <div id="header"><img src="img/title.png" alt="SRJC Scheduler">
+        <div id="header"><img src="img/drawing.png" alt="SRJC Scheduler"><img src="img/title.png" alt="SRJC Scheduler">
 
         </div>
         <div class="spinner">
@@ -43,6 +44,7 @@
             <div id="first-panel">
                 <div id="timesheet">
                     <div id="canvas"></div>
+                    <div id="shadow"></div>
                     <table id="time-table">
                         <tr>
                             <th></th>
@@ -251,11 +253,104 @@
                     </table>
                 </div>
                 <div id="custom-module">
-                    <div class='button-wrap b-custom'>
-                        <div class='button'>
-                            <div class='button-inside'>Add Custom Event</div>
+                    <div id="custom">
+                        <div id="inner-custom">
+
+                            <div id="events-wrap">
+
+<!--                                 <div class="custom-event-wrap">
+                                    <div class="cell-row cell-header">
+                                        <div class="cell">Title</div>
+                                        <div class="cell">Label</div>
+                                    </div>
+                                    <div class="cell-row">
+                                        <div class="cell">
+                                            <div class="inter-cell">
+                                                <input type="text" />
+                                            </div>
+                                        </div>
+                                        <div class="cell">
+                                            <div class="inter-cell">
+                                                <input type="text" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cell-row cell-header">
+                                        <div class="cell">Hours</div>
+                                        <div class="cell">Days</div>
+                                    </div>
+                                    <div class="cell-row">
+                                        <div class="cell">
+                                            <div class="inter-cell">
+                                                <input class="time" type="time" step="900" />-
+                                                <input class="time" type="time" step="900" />
+                                            </div>
+                                        </div>
+
+                                        <div class="cell">
+                                            <div class="inter-cell">
+                                                <div class="button b-days">
+                                                    <div class="button-inside active">M</div>
+                                                </div>
+                                                <div class="button b-days">
+                                                    <div class="button-inside">T</div>
+                                                </div>
+                                                <div class="button b-days">
+                                                    <div class="button-inside active">W</div>
+                                                </div>
+                                                <div class="button b-days">
+                                                    <div class="button-inside">T</div>
+                                                </div>
+                                                <div class="button b-days">
+                                                    <div class="button-inside">F</div>
+                                                </div>
+                                                <div class="button b-days">
+                                                    <div class="button-inside">S</div>
+                                                </div>
+                                                <div class="button b-days">
+                                                    <div class="button-inside">S</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cell-row add">
+                                        <div class="cell">
+                                            <div class="inter-cell">
+                                                <div class="button-wrap b-restart">
+                                                    <div class="button">
+                                                        <div class="button-inside">Add Time
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="custom-event-wrap empty">
+
+                                <div class="button-wrap">
+                                    <div class="button">
+                                        <div id="new-event" class="button-inside">Add New Event
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
+
+
+
+
+                    <div class='button-wrap b-custom'>
+                        <div class='button'>
+                            <div id="add-custom-button" class='button-inside'>Add Custom Event</div>
+                        </div>
+                    </div>
+
+
+                    
                 </div>
             </div>
             <div id="second-panel">
@@ -350,14 +445,14 @@
                 </div>
                 <div id="add-module">
                     <div class='button-wrap b-add'>
-                        <div class="add-button add-collapse add-bar">u</div>
+                        <div class="add-button add-collapse add-bar icon">u</div>
                         <div class='button'>
 
                             <div id="add-button" type='text' class="button-inside active">Add Course</div>
                             <input id="add-box" type='text' class="button-inside add-bar" placeholder="Course Name" />
 
                         </div>
-                        <div class="add-button add-close add-bar">x</div>
+                        <div class="add-button add-close add-bar icon">x</div>
                     </div>
                     <div id="add-results">
                         <ul id="add-results-list">
@@ -477,6 +572,8 @@
 
 </body>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- <script src="js/jquery-1.11.2.min.js"></script> -->
+
 <script src="js/main.js"></script>
 
 </html>

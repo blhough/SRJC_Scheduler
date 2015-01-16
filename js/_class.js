@@ -1,7 +1,8 @@
-console.log("Class.js loaded");
+console.log( "Class.js loaded" );
 
 
-function Class() {
+function Class()
+{
     this.active = false; // drawn on screen
     this.hover = false;
     this.press = false;
@@ -17,238 +18,467 @@ function Class() {
     this.parent = null;
     this.style = null;
     this.classDiv = null;
+    this.divStyle = new DivStyle();
 
     var self = this;
 
-    this.Init = function(courseObj) {
+    this.Init = function( courseObj )
+    {
         self.parent = courseObj;
         self.$parent = courseObj.$div;
         self.style = courseObj.style;
-        self.$div = self.AddClassElement(self, self.$parent);
+        self.$div = self.AddClassElement( self, self.$parent );
         self.BindEvents();
-        self.classDiv = new self.ClassDiv();
+
+        for ( var i = 0; i < self.sessions_.length; i++ )
+        {
+            self.sessions_[ i ].Init( self, self.style );
+        }
     };
 
-    this.BindEvents = function() {
-        self.$div.mouseenter(function() {
+    this.BindEvents = function()
+    {
+        self.$div.mouseenter( function()
+        {
             self.hover = true;
 
             self.RefreshStyle();
+            self.RefreshDivStyle();
             self.PopulateInfo();
-            console.info(self.sect + "mouseenter");
+            console.info( self.sect + "mouseenter" );
+        } );
 
-            if (!self.active) {
-                self.DrawClass();
-            }
-            
-
-            //console.log( "mouseenter class-button" );
-        });
-
-        self.$div.mouseleave(function() {
+        self.$div.mouseleave( function()
+        {
             self.hover = false;
             self.press = false;
 
             self.RefreshStyle();
-            console.info(self.sect + "mouseleave");
+            self.RefreshDivStyle();
+            console.info( self.sect + "mouseleave" );
+        } );
 
-            if (!self.active) {
-                self.HideClass();
-            }
-
-            //console.log( "mouseenter class-button" );
-        });
-
-        self.$div.mouseup(function() {
+        self.$div.mouseup( function()
+        {
             self.press = false;
 
             self.RefreshStyle();
-            console.info(self.sect + "mouseup");
+            console.info( self.sect + "mouseup" );
+        } );
 
-            //console.log( "mouseenter class-button" );
-        });
-
-        self.$div.mousedown(function() {
+        self.$div.mousedown( function()
+        {
             self.press = true;
 
             self.RefreshStyle();
-            console.info(self.sect + "mousedown");
+            console.info( self.sect + "mousedown" );
+        } );
 
-            //console.log( "mouseenter class-button" );
-        });
-
-        self.$div.click(function() {
-            self.ToggleActive();
-            console.info(self.sect + "mouseclick");
-
-            //console.log( "mouseenter class-button" );
-        });
+        self.$div.click( function()
+        {
+            self.ToggleActive( this );
+            console.info( self.sect + "mouseclick" );
+        } );
 
     };
 
-    this.AddClassElement = function(classObj, $courseDiv) {
-        var $classDiv = $("<div/>", {
+
+
+
+
+
+
+
+
+    this.AddClassElement = function( classObj, $courseDiv )
+    {
+        var $classDiv = $( "<div/>",
+        {
             class: "class-button class-mini"
-        });
+        } );
 
-        $classDiv.data("class", classObj);
+        $classDiv.data( "class", classObj );
 
-        $classDiv.append('<span class="class-title">' +
-            (classObj.sect + ' - ' + classObj.sessions_[0].instructor) +
-            '</span> <div class="class-close-button">x</div>'
+        $classDiv.append( '<span class="class-title">' +
+            ( classObj.sect + ' - ' + classObj.sessions_[ 0 ].instructor ) +
+            '</span> <div class="class-close-button icon">x</div>'
         );
 
-        $courseDiv.children(".class-wrap").append($classDiv);
-        setTimeout(function() {
-            $classDiv.removeClass('class-mini');
-        }, 1);
+        $courseDiv.children( ".class-wrap" ).append( $classDiv );
+        setTimeout( function()
+        {
+            $classDiv.removeClass( 'class-mini' );
+        }, 1 );
 
         return $classDiv;
     };
 
-    this.ToggleActive = function(active) {
-        if (active === undefined) {
+
+
+
+
+
+
+
+
+    this.ToggleActive = function( div, active )
+    {
+        if ( active === undefined )
+        {
             self.active = !self.active;
-            this.ToggleActive(self.active);
-        } else {
+            this.ToggleActive( div, self.active );
+        }
+        else
+        {
             var classes_ = self.parent.classes_;
             var classesLen = classes_.length;
             var clas = null;
             var i = 0;
-            if (active) {
+            if ( active )
+            {
 
-                for (i = 0; i < classesLen; i++) {
-                    clas = classes_[i];
-                    if (clas.active) {
+                for ( i = 0; i < classesLen; i++ )
+                {
+                    clas = classes_[ i ];
+                    if ( clas.active )
+                    {
                         clas.active = false;
                         clas.RefreshStyle();
                         clas.HideClass();
                     }
                 }
+                $( div ).parent().children().removeClass( "active" );
 
                 self.active = true;
+                $( div ).addClass( "active" );
                 self.RefreshStyle();
                 self.DrawClass();
-
-            } else {
-                for (i = 0; i < classesLen; i++) {
-                    clas = classes_[i];
-                    if (clas.active) {
+            }
+            else
+            {
+                for ( i = 0; i < classesLen; i++ )
+                {
+                    clas = classes_[ i ];
+                    if ( clas.active )
+                    {
                         clas.active = false;
                         clas.RefreshStyle();
                         clas.HideClass();
                     }
                 }
 
+                $( div ).parent().children().removeClass( "active" );
+                console.log( self.parent.expanded );
+
+                if ( !self.parent.expanded )
+                {
+                    $( div ).addClass( "class-mini" );
+                    $( div ).removeClass( "class-solo" );
+                }
+
             }
         }
     };
 
-    this.RefreshStyle = function() {
-        if (self.press) {
-            self.$div.css('background', 'hsl(' + (self.style.hue) + ', ' + (self.style.sat + 20) + '%, ' + (self.style.lit - 10) + '%)');
-        } else if (self.active) {
-            self.$div.css('background', 'hsl(' + (self.style.hue) + ', ' + (self.style.sat + 35) + '%, ' + (self.style.lit + 7) + '%)');
-        } else if (self.hover) {
-            self.$div.css('background', 'hsl(' + (self.style.hue) + ', ' + (self.style.sat + 25) + '%, ' + (self.style.lit + 20) + '%)');
-        } else {
-            self.$div.css('background', 'hsl(' + (self.style.hue) + ', ' + (self.style.sat - 25) + '%, ' + (self.style.lit + 20) + '%)');
+
+
+
+
+
+
+
+
+    this.RefreshStyle = function()
+    {
+        if ( self.press )
+        {
+            self.$div.css( 'background', 'hsl(' + ( self.style.hue ) + ', ' + ( self.style.sat + 20 ) + '%, ' + ( self.style.lit - 10 ) + '%)' );
+        }
+        else if ( self.active )
+        {
+            self.$div.css( 'background', 'hsl(' + ( self.style.hue ) + ', ' + ( self.style.sat + 35 ) + '%, ' + ( self.style.lit + 7 ) + '%)' );
+        }
+        else if ( self.hover )
+        {
+            self.$div.css( 'background', 'hsl(' + ( self.style.hue ) + ', ' + ( self.style.sat + 25 ) + '%, ' + ( self.style.lit + 20 ) + '%)' );
+        }
+        else
+        {
+            self.$div.css( 'background', 'hsl(' + ( self.style.hue ) + ', ' + ( self.style.sat - 25 ) + '%, ' + ( self.style.lit + 20 ) + '%)' );
         }
     };
 
-    this.DrawClass = function() {
-        srjc.canvas.ClassAdd(self.classDiv);
-    };
-
-    this.HideClass = function() {
-        srjc.canvas.ClassRemove(self.classDiv);
-    };
 
 
 
-    this.DrawSession = function(sessionNum) {
-        for (var day = 0; day < 7; day++) {
-            if (self.sessions_[sessionNum].days_[day] == 1) {
-                srjc.canvas.SessionAdd(new self.SessionDiv(self, day, self.sessions_[sessionNum].dateStart,
-                    self.sessions_[sessionNum].dateEnd,
-                    self.sessions_[sessionNum].timeStart,
-                    self.sessions_[sessionNum].timeEnd,
-                    self.style));
-            }
-        }
-    };
 
-    // public //
-    this.ClassDiv = function() {
-        this.parent = self.parent;
-        this.current = false;
-        this.$divs_ = [];
 
-        this.sessionDivs_ = [];
 
+
+
+    this.DrawClass = function( refresh, divStyle )
+    {
         var sessionsLen = self.sessions_.length;
 
-        for (var i = 0; i < sessionsLen; i++) {
-            this.sessionDivs_.push(new self.SessionDiv(self.sessions_[i]));
+        for ( var i = 0; i < sessionsLen; i++ )
+        {
+            self.DrawSession( refresh, divStyle, i );
         }
 
-
-
-
+        self.DrawClassConflicts();
     };
 
-    this.SessionDiv = function(session) {
-        var semStart, semEnd;
+    this.HideClass = function()
+    {
+        var sessionsLen = self.sessions_.length;
 
-        if (session.dateStart < 152) {
-            semStart = SPRING_START;
-            semEnd = SPRING_END;
-        } else if (session.dateStart < 213) {
-            semStart = SUMMER_START;
-            semEnd = SUMMER_END;
-        } else {
-            semStart = FALL_START;
-            semEnd = FALL_END;
+        for ( var i = 0; i < sessionsLen; i++ )
+        {
+            self.HideSession( i );
         }
-
-        this.widthPre = Math.max(2, session.dateEnd - session.dateStart) +
-            Math.min(session.dateStart - semStart, 0) -
-            Math.max(session.dateEnd - semEnd, 0);
-        //console.log( "widthPre " + this.widthPre );
-
-        this.xPre = Math.max(session.dateStart - semStart, 0);
-        // console.log( "xPre " + this.xPre );
-
-        this.heightPre = session.timeEnd - session.timeStart;
-        this.semLen = (semEnd - semStart);
-
-
-
-        this.parent = self.classDiv;
-        this.session = session;
-        this.x_ = [];
-        this.y = 0;
-        this.width = 0;
-        this.height = 0;
-        this.current = false;
-
-        this.style = self.style;
-
-        this.innerColor = '';
-        this.borderColor = 'black';
-        this.borderWidth = '1px';
-        this.days_ = session.days_;
-        //this.dateStart = dateStart;
-        // this.dateEnd = dateEnd;
-        this.timeStart = session.timeStart;
-        // this.timeEnd = timeEnd;
-        // this.style = style;
     };
 
     // public //
-    this.PopulateInfo = function() {
-        srjc.info.PopulateInfo(self);
-
+    this.DrawSession = function( refresh, divStyle, i )
+    {
+        self.sessions_[ i ].DrawSession( refresh, divStyle );
     };
+
+    this.HideSession = function( i )
+    {
+        self.sessions_[ i ].HideSession();
+    };
+
+
+
+
+
+
+
+
+
+    // this.DrawSession = function( sessionNum )
+    // {
+    //     for ( var day = 0; day < 7; day++ )
+    //     {
+    //         if ( self.sessions_[ sessionNum ].days_[ day ] == 1 )
+    //         {
+    //             srjc.canvas.SessionAdd( new self.SessionDiv( self, day, self.sessions_[ sessionNum ].dateStart,
+    //                 self.sessions_[ sessionNum ].dateEnd,
+    //                 self.sessions_[ sessionNum ].timeStart,
+    //                 self.sessions_[ sessionNum ].timeEnd,
+    //                 self.style ) );
+    //         }
+    //     }
+    // };
+
+    // public //
+    // this.ClassDiv = function()
+    // {
+    //     this.parent = self.parent;
+    //     this.current = false;
+    //     this.$divs_ = [];
+
+    //     this.sessionDivs_ = [];
+
+    //     this.divStyle = new self.DivStyle();
+
+    //     var sessionsLen = self.sessions_.length;
+
+    //     for ( var i = 0; i < sessionsLen; i++ )
+    //     {
+    //         this.sessionDivs_.push( new self.SessionDiv( self.sessions_[ i ] ) );
+    //     }
+
+
+
+
+    // };
+
+
+
+
+
+
+
+
+
+    // public //
+    this.RefreshDivStyle = function()
+    {
+        var divStyle = self.divStyle;
+        if ( self.hover )
+        {
+            divStyle.borderWidth = 2;
+            divStyle.borderColor = 'white';
+            divStyle.alpha = 1;
+
+            self.parent.DrawCourse( true,
+            {
+                style:
+                {
+                    sat: 20
+                },
+                alpha: 0.3
+            } );
+
+            self.DrawClass( false, divStyle );
+        }
+        else if ( self.active )
+        {
+            divStyle.borderWidth = 1;
+            divStyle.borderColor = 'black';
+            divStyle.alpha = 0.8;
+
+            self.parent.DrawCourse( true );
+            self.DrawClass( false );
+        }
+        else
+        {
+            self.parent.DrawCourse( true );
+            self.HideClass();
+        }
+    };
+
+
+
+
+
+
+
+
+
+    // public //
+    this.PopulateInfo = function()
+    {
+        srjc.info.PopulateInfo( self );
+    };
+
+
+
+
+
+
+
+
+
+    this.DrawClassConflicts = function( skip )
+    {
+        var sessionList_;
+
+        for ( var i = 0; i < 7; i++ )
+        {
+            sessionList_ = self.GenerateSessionList( i, skip );
+
+            if ( sessionList_.length <= 1 )
+            {
+                continue;
+            }
+
+            var sessionListLen = sessionList_.length;
+
+            for ( var j = 0; j < sessionListLen; j++ )
+            {
+                var ds, de, ts, te, session = sessionList_[ j ];
+
+                ds = session.dateStart;
+                de = session.dateEnd;
+
+                ts = session.timeStart;
+                te = session.timeEnd;
+
+                for ( var k = j + 1; k < sessionList_.length; k++ )
+                {
+                    var ds2, de2, ts2, te2, session2 = sessionList_[ k ];
+
+                    ds2 = session2.dateStart;
+                    de2 = session2.dateEnd;
+
+                    ts2 = session2.timeStart;
+                    te2 = session2.timeEnd;
+
+                    if ( self.CheckClassConflict( ds, de, ts, te, ds2, de2, ts2, te2 ) )
+                    {
+                        var days_ = [];
+                        days_[ i ] = 1; 
+
+                        var sessionDiv = new SessionDiv( { 
+                            dateStart : Math.max( ds, ds2 ),
+                            dateEnd : Math.min( de, de2 ),
+                            timeStart : Math.max( ts, ts2 ),
+                            timeEnd : Math.min( te , te2 ),
+                            days_ : days_,
+                        } );
+
+                        srjc.canvas.DrawSession( false , sessionDiv, { style: new Style( 0 , 0 , 0 ), borderColor: 'red' , borderWidth: 3 , alpha: 0.8 } );
+
+                        //DrawRect2( x1, y1, x2, y2, "red", 3, true, "hsla(0,0%,0%,.35)" );
+                    }
+                }
+            }
+        }
+    };
+
+
+
+
+
+    this.GenerateSessionList = function( day )
+    {
+        var sessionList_ = [];
+
+        var courses_ = self.parent.parent.courses_;
+        var coursesLen = courses_.length;
+
+        var classes_ = null;
+        var sessions_ = null;
+
+        var classesLen = null;
+        var sessionsLen = null;
+
+        var i = 0,
+            j = 0,
+            k = 0;
+
+        for ( i = 0; i < coursesLen; i++ )
+        {
+            if ( courses_[ i ].visible )
+            {
+                classes_ = courses_[ i ].classes_;
+                classesLen = classes_.length;
+
+                for ( j = 0; j < classesLen; j++ )
+                {
+                    if ( classes_[ j ].active || classes_[ j ].hover )
+                    {
+                        sessions_ = classes_[ j ].sessions_;
+                        sessionsLen = sessions_.length;
+
+                        for ( k = 0; k < sessionsLen; k++ )
+                        {
+                            if ( sessions_[ k ].days_[ day ] === 1 )
+                            {
+                                sessionList_.push( sessions_[ k ] );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return sessionList_;
+    };
+
+
+    this.CheckClassConflict = function( ds, de, ts, te, ds2, de2, ts2, te2 )
+    {
+        if ( ( ts2 < te ) && ( te2 > ts ) )
+        {
+            return ( ( ds2 <= de ) && ( de2 >= ds ) );
+        }
+
+        return false;
+    };
+
 
 }

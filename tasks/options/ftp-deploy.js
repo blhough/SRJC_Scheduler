@@ -7,6 +7,6 @@ module.exports = {
     },
     src: 'build/',
     dest: '/v2/',
-    //exclusions: ['path/to/source/folder/**/.DS_Store', 'path/to/source/folder/**/Thumbs.db', 'path/to/dist/tmp']
+    exclusions: ['build/js/main.js.map', 'build/js/.min.js']
   }
 }

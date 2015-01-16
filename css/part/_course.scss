@@ -3,6 +3,7 @@ $line-height:30px;
 $course-header-height:30px;
 $course-header-height2:40px;
 $trans-time:.2s;
+
 .course-wrap,
 .course-header,
 .class-button {
@@ -18,7 +19,7 @@ $trans-time:.2s;
     min-width: 118px;
     margin-top: 6px;
     box-shadow: 0 2px 1px rgba(black, .1), 0 1px 2px rgba(black, .1);
-    transition: height $trans-time, opacity $trans-time;
+    transition: height $trans-time, opacity $trans-time, background $trans-time;
     &:first-child {
         margin: 0;
     }
@@ -58,6 +59,7 @@ $trans-time:.2s;
     }
     &:active {
         background-color: hsl(170, 90%, 40%);
+       
     }
     &.active {
         background-color: hsl(170, 95%, 50%);
@@ -72,6 +74,7 @@ $trans-time:.2s;
         border-radius: 2px;
     }
 }
+
 .course-title {
     white-space: nowrap;
     overflow: hidden;
@@ -102,6 +105,9 @@ $trans-time:.2s;
     &.active {
         font-weight: 700;
     }
+    &:active {
+        color: #AAA;
+    }
 }
 .course-title,
 .course-button {
@@ -111,8 +117,14 @@ $trans-time:.2s;
     bottom: 0;
     width: 24px;
     text-align: center;
+
+    &:active{
+        color: #AAA;
+    }
+
     &:hover {
         color: #FFF;
     }
+
 }
 

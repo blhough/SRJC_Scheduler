@@ -28,23 +28,23 @@ var styleIndex = 0;
 // ];
 
 var Styles_ = [
-    
+
     new Style( 2, 75, 57 ), //red
-    new Style( 105, 66, 54 ), // green
+    new Style( 102, 66, 54 ), // green
     new Style( 198, 65, 56 ), // blue
     // new Style( 5, 82, 64 ),
     // new Style( 114, 85, 59 ),
     // new Style( 226, 91, 70 ),
     new Style( 44, 78, 54 ), //gold
     new Style( 286, 73, 62 ), // magenta
-    new Style( 142, 61, 52 ), //green blue
+    new Style( 150, 61, 52 ), //green blue
     new Style( 26, 80, 52 ), // orange
     new Style( 258, 70, 68 ), // purp
     new Style( 60, 74, 52 ), // yellow
     new Style( 309, 77, 67 ), // pink
 
     new Style( 184, 70, 57 ), // sky blue
-    new Style( 115, 47, 51 ), // darker green
+    new Style( 121, 47, 47 ), // darker green
 
     new Style( 352, 80, 66 ), // light red
     new Style( 47, 80, 53 ), // goldenrod
@@ -56,16 +56,14 @@ var Styles_ = [
 
 ];
 
-function Style( hue, sat, lit )
+function NextStyle()
 {
-    this.hue = hue;
-    this.sat = sat;
-    this.lit = lit;
-    this.alf = 0.8;
+    if ( styleIndex === 18 )
+    {
+        styleIndex = 0;
+    }
+    return Styles_[ styleIndex++ ];
 }
-
-
-
 
 
 
@@ -80,36 +78,169 @@ function Course( courseTitle )
     this.unlocked = true;
     this.classDeletedNum = 0;
     this.style = new Style();
+    this.divStyle = new DivStyle( new Style() );
+    this.parent = null;
+    this.STYLE = null;
+
 
 
 
     var self = this;
 
+    var _ = {
+        exp: $( "#add-box" ),
+        vis: $( "#add-button" ),
+        lck: $( ".add-bar" ),
+        rmv: $( "#add-results" ),
+        addResultsList: $( "#add-results-list" ),
+        collapseButton: $( ".add-collapse" ),
+        closeButton: $( ".add-close" ),
+    };
+
+
 
     // public //
-    this.Init = function( courseText_, activeClassNum )
+    this.Init = function( parent, courseText_, activeClassNum )
     {
-        self.style = self._NextStlye();
+        this.parent = parent;
+        self.style = NextStyle();
+        this.STYLE = $.extend(
+        {}, this.style );
         self.$div = self.AddCourseElement( self );
         self.classes_ = self.AddClasses( courseText_, activeClassNum, self );
         self.RefreshStyle();
+        this.BindEvents();
     };
 
 
-    // private //
-    this._NextStlye = function()
+
+    this.BindEvents = function()
     {
-        if ( styleIndex === 18 )
+        self.$div.find( ".course-collapse" ).click( function()
         {
-            styleIndex = 0;
-        }
-        return Styles_[ styleIndex++ ];
+            self.ToggleExpanded( this );
+            self.RefreshStyle();
+            console.info( self.courseTitle + " expanded: " + self.expanded );
+        } );
+
+        self.$div.find( ".course-visible" ).click( function()
+        {
+            self.ToggleVisible( this );
+            self.RefreshStyle();
+            console.info( self.courseTitle + " visible: " + self.visible );
+        } );
+
+        self.$div.find( ".course-lock" ).click( function()
+        {
+            self.ToggleLock( this );
+            self.RefreshStyle();
+            console.info( self.courseTitle + " lock" );
+        } );
+
+        self.$div.find( ".course-remove" ).click( function()
+        {
+            console.info( self.courseTitle + " remove" );
+        } );
     };
+
+
+
+    this.ToggleExpanded = function( div, active )
+    {
+        var $par = null;
+
+        if ( active === undefined )
+        {
+            self.expanded = !self.expanded;
+            self.ToggleExpanded( div, self.expanded );
+        }
+        else if ( active )
+        {
+            self.expanded = true;
+            $( div ).removeClass( "active" );
+            $par = $( div ).parents( ".course-wrap" );
+            $par.find( ".class-button" ).removeClass( "class-mini" );
+            $par.find( ".class-button" ).removeClass( "class-solo" );
+
+
+        }
+        else
+        {
+            self.expanded = false;
+            $( div ).addClass( "active" );
+            $par = $( div ).parents( ".course-wrap" );
+            $par.find( ".class-button:not(.active)" ).addClass( "class-mini" );
+            $par.find( ".class-button.active" ).addClass( "class-solo" );
+            self.RefreshStyle();
+        }
+    };
+
+
+
+    this.ToggleVisible = function( div, active )
+    {
+        if ( active === undefined )
+        {
+            self.visible = !self.visible;
+            self.ToggleVisible( div, self.visible );
+        }
+        else if ( active )
+        {
+            self.visible = true;
+            $( div ).removeClass( "active" );
+        }
+        else
+        {
+            self.visible = false;
+            $( div ).addClass( "active" );
+        }
+    };
+
+
+    this.ToggleLock = function( div, active )
+    {
+        if ( active === undefined )
+        {
+            self.unlocked = !self.unlocked;
+            self.ToggleLock( div, self.unlocked );
+        }
+        else if ( active )
+        {
+            self.unlocked = true;
+            $( div ).removeClass( "active" );
+        }
+        else
+        {
+            self.unlocked = false;
+            $( div ).addClass( "active" );
+        }
+    };
+
 
 
     this.RefreshStyle = function()
     {
-        self.$div.css( 'background', 'hsl(' + this.style.hue + ', ' + ( this.style.sat - 9 ) + '%, ' + ( this.style.lit + 26 ) + '%)' );
+        if ( self.visible )
+        {
+            self.style.sat = self.STYLE.sat;
+            self.style.lit = self.STYLE.lit;
+        }
+        else
+        {
+            self.style.sat = -100;
+            self.style.lit = 50;
+        }
+
+        if ( self.unlocked )
+        {
+            self.$div.css( 'background', 'hsl(' + this.style.hue + ', ' + ( this.style.sat - 9 ) + '%, ' + ( this.style.lit + 28 ) + '%)' );
+        }
+        else
+        {
+            self.$div.css( 'background', 'hsl(' + this.style.hue + ', ' + ( this.style.sat + 35 ) + '%, ' + ( this.style.lit + 17 ) + '%)' );
+        }
+
+
 
         var classesLen = self.classes_.length;
         for ( var i = 0; i < classesLen; i++ )
@@ -131,10 +262,10 @@ function Course( courseTitle )
         $courseDiv.append( '<div class="course-header">' +
             '<div class="course-title">' + courseObj.courseTitle + '</div>' +
             '<div class="course-button-wrap">' +
-            '<div class="course-button">x</div>' +
-            '<div class="course-button">l</div>' +
-            '<div class="course-button">v</div>' +
-            '<div class="course-button course-collapse">u</div>' +
+            '<div class="course-button course-remove icon">x</div>' +
+            '<div class="course-button course-lock icon">l</div>' +
+            '<div class="course-button course-visible icon">v</div>' +
+            '<div class="course-button course-collapse icon">u</div>' +
             '</div>' +
             '</div>' +
             '<div class="class-wrap"></div>'
@@ -241,7 +372,7 @@ function Course( courseTitle )
 
         loop1: for ( i = 0; i < sessionLength; i++ ) // for number of class sessions create session object
             {
-                var sessionObj = new Session(); // create new session object
+                var sessionObj = new Session( self.divStyle ); // create new session object
                 classObj.sessions_.push( sessionObj ); // push session object into class.sessions array
 
 
@@ -613,6 +744,39 @@ function Course( courseTitle )
         //     console.warn( "error_AddClass" + err );
         // }
 
+    };
+
+
+    // public //
+    this.DrawCourse = function( refresh, divStyle )
+    {
+        var classesLen = self.classes_.length;
+
+        for ( var i = 0; i < classesLen; i++ )
+        {
+            self.DrawClass( refresh, divStyle, i );
+        }
+    };
+
+    this.HideCourse = function()
+    {
+        var classesLen = self.classes_.length;
+
+        for ( var i = 0; i < classesLen; i++ )
+        {
+            self.HideClass( i );
+        }
+    };
+
+    // public //
+    this.DrawClass = function( refresh, divStyle, i )
+    {
+        self.classes_[ i ].DrawClass( refresh, divStyle );
+    };
+
+    this.HideClass = function( i )
+    {
+        self.classes_[ i ].HideClass();
     };
 
 }
