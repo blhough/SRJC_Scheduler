@@ -8,7 +8,9 @@ function Print()
     // elements 
     /* private */
     var _ = {
-        searchBox: $( "#add-box" ),
+        container: $( "#container" ),
+        table: $( "#tableInfo" ),
+
     };
 
 
@@ -19,14 +21,15 @@ function Print()
 
     this.BindEvents = function()
     {
-        _.searchButton.click( function()
+        $("#info").dblclick( function()
         {
-            self.ToggleSearch( true );
+            self.FormatPrint( true );
         } );
     };
 
     this.FormatPrint = function()
     {
+        _.container.addClass('print');
         srjc.canvas.Redraw( true );
        // RefreshAllClassColor( true );
        // DrawClassConflicts();
@@ -35,10 +38,10 @@ function Print()
       //  $( "body" ).css( "height" , tableH + "px" );
       //  $( "#container2" ).css( "height" , tableH + "px" );
 
-        CreateTable();
+        this.CreateTable();
 
 
-        window.print();
+       // window.print();
 
        // ga( 'send' , 'event' , 'Button' , 'Print Intent' );
        // RefreshAllClassColor();
@@ -48,55 +51,71 @@ function Print()
       //  $( "body" ).css( "height" , "intial" );
 
        // $( "#container2" ).css( "height" , "intial" );
-        Redraw();
-    }
+        
+        //Redraw();
+    };
 
 
 
-        this.CreateTable = function()
+    this.CreateTable = function()
     {
-        $table = $( "#tableInfo" );
-        $table.width( $( "#container" ).outerWidth() + "px" );
-        $table.html( "<tr><th>Course</th><th>Sect</th><th>Days</th><th>Hours</th><th>Instructor</th><th>location</th><th>units</th><th>Date Begin/End</th><th>Date Final Exam</th></tr>" );
+        _.table.width( '1100px' );
+        _.table.html( "<tr><th>Course</th><th>Sect</th><th>Days</th><th>Hours</th><th>Instructor</th><th>location</th><th>units</th><th>Date Begin/End</th><th>Date Final Exam</th></tr>" );
 
-        for ( var i = 0 ; i < courses.length ; i++ )
+        var courses_ = srjc.schedule.courses_;
+        var coursesLen = courses_.length;
+
+        for ( var i = 0 ; i < coursesLen ; i++ )
         {
-            for ( var j = 0 ; j < courses[ i ].classes.length ; j++ )
+            var classes_ = courses_[ i ].classes_;
+            var classesLen = classes_.length;
+
+            for ( var j = 0 ; j < classesLen ; j++ )
             {
-                if ( courses[ i ].classes[ j ].display )
+
+                if ( classes_[ j ].active )
                 {
-                    var tempClass = courses[ i ].classes[ j ];
+                    var tempClass = classes_[ j ];
                     //$div.css( "box-shadow" , "inset 0 0 0 1000px " + col2 );
-                    $table.append( "<tr><td style='box-shadow: inset 0 0 0 1000px" + " hsla(" + tempClass.lhue + "," + 90 + "%," + 60 + "%," + tempClass.lalp + ")'><span>" + courses[ i ].courseTitle + "</span></td><td><span>" + tempClass.sect + "</span></td><td><span>" + GetDaysText( tempClass ) + "</span></td><td><span>" + GetTimeText( tempClass ) + "</span></td><td><span>" + GetInstrText( tempClass ) + "</span></td><td><span>" + GetLocText( tempClass ) + "</span></td><td><span>" + tempClass.units + "</span></td><td><span>" + GetDatesText( tempClass ) + "</span></td><td><span>" + tempClass.finalExam + "</span></td></tr>" );
+                    _.table.append( "<tr><td style='box-shadow: inset 0 0 0 1000px" + " hsl(" + tempClass.style.hue + "," + 90 + "%," + 60 + "%)'><span>" + courses_[ i ].courseTitle + "</span></td><td><span>" + tempClass.sect + "</span></td><td><span>" + self.GetDaysText( tempClass ) + "</span></td><td><span>" + self.GetTimeText( tempClass ) + "</span></td><td><span>" + self.GetInstrText( tempClass ) + "</span></td><td><span>" + self.GetLocText( tempClass ) + "</span></td><td><span>" + tempClass.units + "</span></td><td><span>" + self.GetDatesText( tempClass ) + "</span></td><td><span>" + tempClass.finalExam + "</span></td></tr>" );
                     
-                    if ( tempClass.note != "" )
+                    if ( tempClass.note !== "" )
                     {
-                        $table.append( "<tr><td colspan='2'></td><td class='wrap' colspan='7'><span>" + tempClass.note + "</span></td></tr>" );
+                        _.table.append( "<tr><td colspan='2'></td><td class='wrap' colspan='7'><span>" + tempClass.note + "</span></td></tr>" );
                     }
                 }
 
             }
         }
 
-        $table.append( "<tr><td colspan='3'><span><strong>Totals: </strong></span></td><td><span><strong>" + GetTotalHours() + " hours</strong></span></td><td colspan='2'></td><td><span><strong>" + GetTotalUnits() + "</strong></span></td><td colspan='2'></td></tr>" );
-    }
+        _.table.append( "<tr><td colspan='3'><span><strong>Totals: </strong></span></td><td><span><strong>" + self.GetTotalHours() + " hours</strong></span></td><td colspan='2'></td><td><span><strong>" + self.GetTotalUnits() + "</strong></span></td><td colspan='2'></td></tr>" );
+    };
 
     this.GetTotalHours = function()
     {
         var minutes = 0;
         var plus = false;
 
-        for ( var i = 0 ; i < courses.length ; i++ )
-        {
-            for ( var j = 0 ; j < courses[ i ].classes.length ; j++ )
-            {
-                if ( courses[ i ].classes[ j ].display )
-                {
-                    for( var k = 0 ; k < courses[ i ].classes[ j ].sessions.length ; k++ )
-                    {
-                        var tempSession = courses[ i ].classes[ j ].sessions[ k ];
+        var courses_ = srjc.schedule.courses_;
+        var coursesLen = courses_.length;
 
-                        if ( tempSession.timeStart == 0 && tempSession.timeEnd == 0 )
+        for ( var i = 0 ; i < coursesLen ; i++ )
+        {
+            var classes_ = courses_[ i ].classes_;
+            var classesLen = classes_.length;
+
+            for ( var j = 0 ; j < classesLen ; j++ )
+            {
+                if ( classes_[ j ].active )
+                {
+                    var sessions_ = classes_[ j ].sessions_;
+                    var sessionsLen = sessions_.length;
+
+                    for( var k = 0 ; k < sessionsLen ; k++ )
+                    {
+                        var tempSession = sessions_[ k ];
+
+                        if ( tempSession.timeStart === 0 && tempSession.timeEnd === 0 )
                         {
                             var temp = parseFloat( tempSession.timeS ) * 60;
 
@@ -113,9 +132,9 @@ function Print()
                         {
                             var multi = 0;
 
-                            for( var l = 0 ; l < tempSession.days.length ; l++ )
+                            for( var l = 0 ; l < tempSession.days_.length ; l++ )
                             {
-                                if ( tempSession.days[ l ] == 1 )
+                                if ( tempSession.days_[ l ] == 1 )
                                 {
                                     multi++;
                                 }
@@ -130,32 +149,39 @@ function Print()
         console.log( "minuts: " + minutes );
         
         minutes /= 60;
-        if ( plus == true )
+        if ( plus === true )
             return minutes.toFixed(1) + "+";
         else
             return minutes.toFixed(1);
-    }
+    };
 
     
     this.GetTotalUnits = function()
     {
         var units = 0;
 
-        for ( var i = 0 ; i < courses.length ; i++ )
+        var courses_ = srjc.schedule.courses_;
+        var coursesLen = courses_.length;
+
+        for ( var i = 0 ; i < coursesLen ; i++ )
         {
-            for ( var j = 0 ; j < courses[ i ].classes.length ; j++ )
+
+            var classes_ = courses_[ i ].classes_;
+            var classesLen = classesLen;
+
+            for ( var j = 0 ; j < classesLen ; j++ )
             {
-                if ( courses[ i ].classes[ j ].display )
+                if ( classes_[ j ].active )
                 {
-                    units += parseFloat( courses[ i ].classes[ j ].units ); 
-                    console.log( "untis: " + courses[ i ].classes[ j ].units );
+                    units += parseFloat( classes_[ j ].units ); 
+                    console.log( "untis: " + classes_[ j ].units );
                     break;
                 }
             }
         }
 
         return units.toFixed( 1 );
-    }
+    };
 
 
 
@@ -163,79 +189,94 @@ function Print()
     {
         s = "";
 
-        for ( var i = 0 ; i < temp.sessions.length ; i++ )
+        var sessions_ = temp.sessions_;
+        var sessionsLen = sessions_.length;
+
+        for ( var i = 0 ; i < sessionsLen ; i++ )
         {
-            s += temp.sessions[ i ].daysS;
-            if ( i != temp.sessions.length - 1 )
+            s += sessions_[ i ].daysS;
+            if ( i != sessionsLen - 1 )
             {
                 s += "<br>";
             }
         }
 
         return s;
-    }
+    };
 
     this.GetTimeText = function( temp )
     {
         s = "";
 
-        for ( var i = 0 ; i < temp.sessions.length ; i++ )
+        var sessions_ = temp.sessions_;
+        var sessionsLen = sessions_.length;
+
+        for ( var i = 0 ; i < sessionsLen ; i++ )
         {
-            s += temp.sessions[ i ].timeS;
-            if ( i != temp.sessions.length - 1 )
+            s += sessions_[ i ].timeS;
+            if ( i != sessionsLen - 1 )
             {
                 s += "<br>";
             }
         }
 
         return s;
-    }
+    };
 
     this.GetInstrText = function( temp )
     {
         s = "";
 
-        for ( var i = 0 ; i < temp.sessions.length ; i++ )
+        var sessions_ = temp.sessions_;
+        var sessionsLen = sessions_.length;
+
+        for ( var i = 0 ; i < sessionsLen ; i++ )
         {
-            s += temp.sessions[ i ].instructor;
-            if ( i != temp.sessions.length - 1 )
+            s += sessions_[ i ].instructor;
+            if ( i != sessionsLen - 1 )
             {
                 s += "<br>";
             }
         }
 
         return s;
-    }
+    };
 
     this.GetLocText = function( temp )
     {
         s = "";
 
-        for ( var i = 0 ; i < temp.sessions.length ; i++ )
+        var sessions_ = temp.sessions_;
+        var sessionsLen = sessions_.length;
+
+        for ( var i = 0 ; i < sessionsLen ; i++ )
         {
-            s += temp.sessions[ i ].location;
-            if ( i != temp.sessions.length - 1 )
+            s += sessions_[ i ].location;
+            if ( i != sessionsLen - 1 )
             {
                 s += "<br>";
             }
         }
 
         return s;
-    }
+    };
 
     this.GetDatesText = function( temp )
     {
         s = "";
 
-        for ( var i = 0 ; i < temp.sessions.length ; i++ )
+        var sessions_ = temp.sessions_;
+        var sessionsLen = sessions_.length;
+
+        for ( var i = 0 ; i < sessionsLen ; i++ )
         {
-            s += temp.sessions[ i ].dateS;
-            if ( i != temp.sessions.length - 1 )
+            s += sessions_[ i ].dateS;
+            if ( i != sessionsLen - 1 )
             {
                 s += "<br>";
             }
         }
 
         return s;
-    }
+    };
 }

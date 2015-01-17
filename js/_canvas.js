@@ -17,6 +17,7 @@ function Canvas()
         table: $( "#time-table" ),
         timesheet: $( "#timesheet" ),
         firstPanel: $( "#first-panel" ),
+        thirdPanel: $( "#third-panel" ),
         firstCell: $( "#time-table tr:first-child th:first-child" ),
         cells: $( "#time-table tr:first-child th:not(th:first-child)" ),
         rows: $( "#time-table tr" ),
@@ -28,7 +29,7 @@ function Canvas()
     this.Init = function()
     {
         self.BindEvents();
-        $( "#main").removeClass('loading');
+        $( "#main" ).removeClass( 'loading' );
         $( ".spinner" ).hide();
         self.Redraw();
     };
@@ -37,7 +38,7 @@ function Canvas()
     {
         $( window ).resize( function()
         {
-            self.Redraw();
+            self.Redraw(  );
             self.Clear();
         } );
     };
@@ -55,8 +56,18 @@ function Canvas()
         $( '#footer' ).outerHeight( 30 + 'px' );
 
         var mainW = _.main.width();
-        cellW = Math.floor( Math.min( ( mainW * 0.5 - 47 ) / 7, ( mainW - panelsMinW - 47 ) / 7 ) );
-        cellH = Math.floor( ( _.timesheet.height() ) / 19 );
+
+        if ( isPrint )
+        {
+            cellW = Math.floor(  ( mainW - _.thirdPanel.outerWidth() - 47 ) / 7 );
+            cellH = 36;
+        }
+        else
+        {
+            cellW = Math.floor( Math.min( ( mainW * 0.5 - 47 ) / 7, ( mainW - panelsMinW - 47 ) / 7 ) );
+            cellH = Math.floor( ( _.timesheet.height() ) / 19 );
+        }
+
 
         _.firstCell.width( "40px" );
         _.cells.width( cellW + "px" );

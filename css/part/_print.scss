@@ -1,80 +1,67 @@
-
-#second-panel, #footer, #semester, #add-module, #custom-module{
-	display: none;
+#second-panel, #footer, #semester, #add-module, #custom-module, .icon {
+    display: none;
 }
-
-#header{
-	background: none;
+#header {
+    background: none;
+   
 }
+#header>img {
+    //content:url('../img/title_black.png');
+        display: table;
+     padding-left: 0;
+      margin: 0 auto;
 
-#container{
-	margin: 10px;
-	width: 800px;
+   
 }
-
-#main{
-	border-width: 3px;
+#main {
+    border-width: 3px;
 }
-
-html,body,#main{
-	background: white;	
+html, body, #main {
+    background: white;
 }
-
-*:not(.drawClass){
-	box-shadow:none !important;
+*:not(.drawClass) {
+    box-shadow: none !important;
 }
-
 #tableInfo {
-	border-collapse: collapse;
-	border-spacing: 0px;
-		width: 100%;
-		table-layout:auto;
-		border: 2px solid black;
-		
-	margin-top: 20px;
-	display: table;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    width: 100%;
+    table-layout: auto;
+    border: 3px solid black;
+    margin-top: 20px;
+    display: table;
 }
-
-
 #tableInfo td {
-	border-style: solid;
-	overflow: hidden;
-	white-space: nowrap;
-	border-width: 1px;
-	vertical-align: top;
+    border-style: solid;
+    overflow: hidden;
+    white-space: nowrap;
+    border-width: 1px;
+    vertical-align: top;
 }
-
 #tableInfo td span {
-	font-size: 1em;
-	padding: 0;
-	display:block;
-
-	margin:4px;
+    font-size: 1em;
+    padding: 0;
+    display: block;
+    margin: 4px;
 }
 #tableInfo td span strong, #tableInfo th {
-	font-weight: 700;
+    font-weight: 700;
 }
-
-
-#tableInfo .wrap{
-	white-space: normal;
+#tableInfo .wrap {
+    white-space: normal;
 }
-
 #tableInfo th {
-	font-size: 1em;
-	border-width: 1px;
-	border-style: solid;
-	overflow: hidden;
-
-
+    font-size: 1em;
+    border-width: 1px;
+    border-style: solid;
+    overflow: hidden;
 }
-
-#totals{
-	height: 29px;
-	border: 0 solid black;
-	border-bottom-width:1px;
-	text-align:center;
-	line-height: 29px;
-	white-space: nowrap;
-	overflow: hidden;
+#totals {
+    height: 29px;
+    border: 0 solid black;
+    border-bottom-width: 1px;
+    text-align: center;
+    line-height: 29px;
+    white-space: nowrap;
+    overflow: hidden;
 }
