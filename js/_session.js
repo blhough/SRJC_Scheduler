@@ -56,47 +56,47 @@ function Session()
 
 
 
-function SessionDiv( session )
-{
-    var semStart, semEnd;
+// function SessionDiv( session )
+// {
+//     var semStart, semEnd;
 
-    if ( session.dateStart < 152 )
-    {
-        semStart = SPRING_START;
-        semEnd = SPRING_END;
-    }
-    else if ( session.dateStart < 213 )
-    {
-        semStart = SUMMER_START;
-        semEnd = SUMMER_END;
-    }
-    else
-    {
-        semStart = FALL_START;
-        semEnd = FALL_END;
-    }
+//     if ( session.dateStart < 152 )
+//     {
+//         semStart = SPRING_START;
+//         semEnd = SPRING_END;
+//     }
+//     else if ( session.dateStart < 213 )
+//     {
+//         semStart = SUMMER_START;
+//         semEnd = SUMMER_END;
+//     }
+//     else
+//     {
+//         semStart = FALL_START;
+//         semEnd = FALL_END;
+//     }
 
-    this.widthPre = Math.max( 2, session.dateEnd - session.dateStart ) +
-        Math.min( session.dateStart - semStart, 0 ) -
-        Math.max( session.dateEnd - semEnd, 0 );
+//     this.widthPre = Math.max( 2, session.dateEnd - session.dateStart ) +
+//         Math.min( session.dateStart - semStart, 0 ) -
+//         Math.max( session.dateEnd - semEnd, 0 );
 
-    this.xPre = Math.max( session.dateStart - semStart, 0 );
+//     this.xPre = Math.max( session.dateStart - semStart, 0 );
 
-    this.heightPre = session.timeEnd - session.timeStart;
-    this.semLen = ( semEnd - semStart );
+//     this.heightPre = session.timeEnd - session.timeStart;
+//     this.semLen = ( semEnd - semStart );
 
-    this.$divs_ = [];
-    this.x_ = [];
-    this.y = 0;
-    this.width = 0;
-    this.height = 0;
-    this.current = false;
+//     this.$divs_ = [];
+//     this.x_ = [];
+//     this.y = 0;
+//     this.width = 0;
+//     this.height = 0;
+//     this.current = false;
 
-    this.days_ = session.days_;
-    this.timeStart = session.timeStart;
+//     this.days_ = session.days_;
+//     this.timeStart = session.timeStart;
 
-    if ( session.parent !== undefined )
-    {
-        this.divStyle_ = [ session.divStyle, session.parent.divStyle, session.parent.parent.divStyle, session.parent.parent.parent.divStyle ];
-    }
-}
+//     if ( session.parent !== undefined )
+//     {
+//         this.divStyle_ = [ session.divStyle, session.parent.divStyle, session.parent.parent.divStyle, session.parent.parent.parent.divStyle ];
+//     }
+// }

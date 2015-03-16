@@ -13,10 +13,12 @@ function Canvas()
     console.log( panelsMinW );
     var _ = {
         main: $( "#main" ),
+        container: $( "#container" ),
         canvas: $( "#canvas" ),
         table: $( "#time-table" ),
         timesheet: $( "#timesheet" ),
         firstPanel: $( "#first-panel" ),
+        secondPanel: $( "#second-panel" ),
         thirdPanel: $( "#third-panel" ),
         firstCell: $( "#time-table tr:first-child th:first-child" ),
         cells: $( "#time-table tr:first-child th:not(th:first-child)" ),
@@ -29,7 +31,7 @@ function Canvas()
     this.Init = function()
     {
         self.BindEvents();
-        $( "#main" ).removeClass( 'loading' );
+        _.container.removeClass( 'loading' );
         $( ".spinner" ).hide();
         self.Redraw();
     };
@@ -38,7 +40,7 @@ function Canvas()
     {
         $( window ).resize( function()
         {
-            self.Redraw(  );
+            self.Redraw();
             self.Clear();
         } );
     };
@@ -54,19 +56,37 @@ function Canvas()
     this.Redraw = function( isPrint )
     {
         $( '#footer' ).outerHeight( 30 + 'px' );
+        //_.container.css( 'align-items' , 'flex-start' );
 
         var mainW = _.main.width();
+        
+        //mainW = 1700;
 
-        if ( isPrint )
-        {
-            cellW = Math.floor(  ( mainW - _.thirdPanel.outerWidth() - 47 ) / 7 );
-            cellH = 36;
-        }
-        else
+        // if ( isPrint )
+        // {
+        //     cellW = Math.floor( ( mainW - _.thirdPanel.outerWidth() - 47 ) / 7 );
+        //     cellH = 36;
+        // }
+        // else
+        // {
+        //     cellW = Math.floor( Math.min( ( mainW * 0.5 - 47 ) / 7, ( mainW - panelsMinW - 47 ) / 7 ) );
+        //     cellH = Math.floor( ( _.timesheet.height() ) / 19 );
+        // }
+
+        if ( !isPrint )
         {
             cellW = Math.floor( Math.min( ( mainW * 0.5 - 47 ) / 7, ( mainW - panelsMinW - 47 ) / 7 ) );
             cellH = Math.floor( ( _.timesheet.height() ) / 19 );
+            //_.main.removeAttr('style');
         }
+        else
+        {
+            cellW = Math.floor( ( mainW - ( _.thirdPanel.outerWidth() ) - 47 ) / 7 );
+            cellH = 36;
+            console.log( _.secondPanel.width() );
+        }
+
+
 
 
         _.firstCell.width( "40px" );
@@ -74,7 +94,8 @@ function Canvas()
         _.timesheet.width( ( cellW * 7 + 47 ) + "px" );
         _.rows.height( cellH + "px" );
         _.footer.outerHeight( ( 30 + Math.max( 0, ( Math.round( _.timesheet.height() ) - Math.round( _.table.height() ) ) ) ) + 'px' );
-
+        _.main.height( _.table.height() );
+        //_.container.css( 'align-items' , 'center' );
 
         if ( cellW <= 75 )
         {
@@ -100,6 +121,7 @@ function Canvas()
 
     };
 
+    
     /*  // public //
     this.ClassAdd = function( classDiv )
     {
@@ -274,70 +296,56 @@ function Canvas()
 */
 
     // public //
-    this.DrawSession = function( refresh, sessionDiv, divStyle )
+    // public //
+    this.DrawSessionDivs = function( sessionDivs_ )
+    {
+        var sessionDivsLen = sessionDivs_.length;
+
+        for ( var i = 0; i < sessionDivsLen; i++ )
+        {
+            this.DrawSessionDiv( sessionDivs_[ i ] );
+        }
+    };
+
+
+
+    this.DrawSessionDiv = function( sessionDiv )
     {
         //console.log( sessionDiv );
 
-        if ( divStyle === undefined )
-        {
-            divStyle = new DivStyle();
-        }
+        // if ( divStyle === undefined )
+        // {
+        //     divStyle = new DivStyle();
+        // }
 
-        if ( sessionDiv.divStyle_ !== undefined )
-        {
-            divStyle = self.CompileDivStyle( divStyle, sessionDiv.divStyle_ );
-        }
+        // if ( sessionDiv.divStyle_ !== undefined )
+        // {
+        //     divStyle = self.CompileDivStyle( divStyle, sessionDiv.divStyle_ );
+        // }
 
-        console.log( divStyle );
+        //console.log( divStyle );
 
-        self.SessionUpdate( sessionDiv, divStyle );
+        self.SessionDivUpdate( sessionDiv );
+        var divStyle = sessionDiv.divStyle;
 
-
-        var xLen = sessionDiv.x_.length;
-        var sessionsLen = sessionDiv.$divs_.length;
-        var $divs_ = [];
-        var i = 0;
-        var $div = null;
-
-        if ( refresh )
-        {
-            xLen = sessionsLen;
-        }
+        //var xLen = sessionDiv.x_.length;
+        //var sessionsLen = sessionDiv.$divs_.length;
+        //var $divs_ = [];
+        var $div = sessionDiv.$div;
 
 
-        for ( i = 0; i < xLen; i++ )
-        {
-            if ( i < sessionsLen )
-            {
-                $div = sessionDiv.$divs_[ i ];
-            }
-            else
-            {
-                $div = $( "<div/>",
-                {
-                    class: "drawClass",
-                } );
-            }
+        $div.width( sessionDiv.width + "px" );
+        $div.height( sessionDiv.height + "px" );
 
+        $div.css( "top", sessionDiv.y + "px" );
+        $div.css( "left", sessionDiv.x + "px" );
 
-            $div.width( sessionDiv.width + "px" );
-            $div.height( sessionDiv.height + "px" );
+        $div.css( "box-shadow", "inset 0 0 0 1000px " + divStyle.innerColor );
+        $div.css( "border-color", divStyle.borderColor );
+        $div.css( "border-width", divStyle.borderWidth + "px" );
 
-            $div.css( "top", sessionDiv.y + "px" );
-            $div.css( "left", sessionDiv.x_[ i ] + "px" );
-
-            $div.css( "box-shadow", "inset 0 0 0 1000px " + divStyle.innerColor );
-            $div.css( "border-color", divStyle.borderColor );
-            $div.css( "border-width", divStyle.borderWidth + "px" );
-
-
-            $divs_.push( $div );
-            _.canvas.append( $div );
-        }
 
         console.log( "drawSession" );
-
-        sessionDiv.$divs_ = $divs_;
 
     };
 
@@ -352,18 +360,11 @@ function Canvas()
         }
     };
 
-    this.SessionUpdate = function( sessionDiv, divStyle )
+    this.SessionDivUpdate = function( sessionDiv )
     {
-        var daysLen = sessionDiv.days_.length;
-        sessionDiv.x_.splice( 0, sessionDiv.x_.length );
+        var divStyle = sessionDiv.divStyle;
 
-        for ( var i = 0; i < daysLen; i++ )
-        {
-            if ( sessionDiv.days_[ i ] === 1 )
-            {
-                sessionDiv.x_.push( 40 + ( cellW + 1 ) * i + sessionDiv.xPre * ( cellW / sessionDiv.semLen ) );
-            }
-        }
+        sessionDiv.x = 40 + ( cellW + 1 ) * sessionDiv.day + sessionDiv.xPre * ( cellW / sessionDiv.semLen );
 
         sessionDiv.y = cellH + ( sessionDiv.timeStart ) * ( cellH / 60 ) - 1;
         // console.log(sessionDiv.y + "y");
@@ -374,7 +375,7 @@ function Canvas()
         sessionDiv.height = sessionDiv.heightPre * ( cellH / 60 ) - divStyle.borderWidth * 2 + 1;
         //  console.log(sessionDiv.height + "height");
 
-        divStyle.innerColor = 'hsla(' + ( divStyle.style.hue ) + ', ' + ( divStyle.style.sat + 25 ) + '%, ' + ( divStyle.style.lit + 5 ) + '%,' + ( divStyle.alpha ) + ')';
+        divStyle.innerColor = 'hsla(' + ( divStyle.style.hue ) + ', ' + ( divStyle.style.sat + 30 ) + '%, ' + ( divStyle.style.lit + 10 ) + '%,' + ( divStyle.alpha ) + ')';
         sessionDiv.current = true;
     };
 

@@ -3,7 +3,8 @@ $footer-height:30px;
 $custom-module-height:30px;
 $button-panel-height:105px;
 $add-module-height:30px;
-$dark-gray:#373737;
+$dark-gray:#303030;
+$light-gray:#F0F0F0;
 $root-directory:'../';
 $font-directory:'../fonts/';
 @import 'part/all';
@@ -45,13 +46,17 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    background: $dark-gray;
 }
 input {
     font-size: 16px;
 }
 #container {
-    //background: url('#{$root-directory}/img/grey_wash_wall.png');
+    //background: $dark-gray;
     position: absolute;
+    max-width: 1920px;
+    padding: 0 3px;
+    margin: 0 auto;
     top: 0;
     bottom: 0;
     left: 0;
@@ -60,42 +65,60 @@ input {
     min-height: 600px;
     display: flex;
     flex-direction: column;
-    //align-items:center;
+    &.loading {
+        #footer {
+            opacity: 0;
+        }
+        #main {
+            opacity: 0;
+            &>div {
+                display: none;
+            }
+        }
+        #img-wrap {
+            width: 100%;
+        }
+    }
 }
 #header {
     box-sizing: border-box;
     height: $header-height;
     width: 100%;
     padding: 14px 30px 0 42px;
-    background: $dark-gray;
+    //background: $dark-gray;
     color: #ED0000;
     font-size: 2.1em;
     font-weight: 300;
 }
-#header img {
+#img-wrap {
+    width: 339px;
+    transition: width .8s;
+}
+#img-wrap img {
     height: 40px;
-    padding: 0 16px 0 0;
+    margin: 0 auto;
+    display: block;
 }
 #main {
-    background: #F5F5F5;
+    background: $light-gray;
     flex: 1 1;
     display: flex;
+    //align-self: center;
     border: 2px solid black;
     opacity: 1;
-    transition: opacity .5s;
-
-    &.loading{
-        opacity: 0;
-        &>div{
-            display: none;
-        }
-    }
+    transition: opacity .8s;
 }
-
 #footer {
     box-sizing: border-box;
     height: $footer-height;
-    background: $dark-gray;
+    //background: $dark-gray;
+    overflow: hidden;
+    transition: opacity .8s;
+}
+#footer img {
+    float: right;
+    height: 32px;
+    padding: 6px 20px;
 }
 #first-panel {
     display: flex;
@@ -114,7 +137,6 @@ input {
     min-width: 265px;
 }
 #button-panel {
-
     border-top: 1px solid black;
 }
 #third-panel {
@@ -139,36 +161,62 @@ input {
 .icon {
     font-family: 'Icon';
 }
-
-#container.print{
-    #third-panel{
+#container.print {
+    #third-panel {
         width: 290px;
-        #course-panel{
+        overflow-y: hidden;
+        #course-panel {
             overflow-y: hidden;
         }
     }
-    #second-panel{
+    #second-panel {
         display: none;
     }
-    #time-table tr:last-child>td{
+    #time-table tr:last-child>td {
         border-bottom-width: 0;
     }
-
-    margin: 10px;
+    #main {
+        flex: none;
+    }
+    #second-panel, #footer, #semester, #add-module, #custom-module, .icon {
+        display: none;
+    }
+    #header {
+        background: none;
+    }
+    #header>img {
+        //content:url('../img/title_black.png');
+        display: table;
+        padding-left: 0;
+        margin: 0 auto;
+        filter: brightness(-100%);
+    }
+    #main {
+        border-width: 3px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+    #container, #first-panel, #third-panel {
+        display: block;
+        //  float: left;
+        flex: none;
+    }
+    margin: 0px;
     width: 1100px;
     bottom: auto;
-
-
+    right: auto;
 }
-
-
 @media only screen and ( max-height: 700px) {
     #header img {
-        height: 30px;
+        height: 36px;
     }
     #header {
         height: 50px;
         padding: 10px 30px 0 42px;
+        #img-wrap {
+            width: 305px;
+
+        }
     }
 }
 @media print {

@@ -93,7 +93,7 @@ function Add()
 
                         _.addResults.stop().animate(
                         {
-                            scrollTop: ( resultsSelectorPos - 3 ) * liHeight
+                            scrollTop: ( resultsSelectorPos - 2 ) * liHeight
                         }, 150 );
 
                     }
@@ -112,7 +112,7 @@ function Add()
 
                         _.addResults.stop().animate(
                         {
-                            scrollTop: ( resultsSelectorPos - 3 ) * liHeight
+                            scrollTop: ( resultsSelectorPos - 2 ) * liHeight
                         }, 150 );
 
 
@@ -128,7 +128,15 @@ function Add()
                     console.log( "enter" );
                 }
             }
-
+            else if ( e.keyCode == 27 )
+            {
+                if ( resultsPanelActive )
+                {
+                    _.searchBox.val( "" );
+                    self.ToggleSearch( false );
+                    self.ToggleResultsPanel( false );
+                }
+            }
         } );
 
     };

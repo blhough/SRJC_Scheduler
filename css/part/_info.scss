@@ -1,5 +1,5 @@
 #info-panel {
-    background: #F5F5F5;
+    background: $light-gray;
     flex: 1 1;
     position: relative;
     overflow: hidden;
@@ -12,7 +12,7 @@
     width: 100%;
 }
 #info-panel div:not(.info-effect) {
-    user-select: initial;
+    user-select: initial; 
     position: relative;
     z-index: 2;
 }

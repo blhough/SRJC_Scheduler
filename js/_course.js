@@ -95,6 +95,7 @@ function Course( courseTitle )
         addResultsList: $( "#add-results-list" ),
         collapseButton: $( ".add-collapse" ),
         closeButton: $( ".add-close" ),
+        header: $( ".course-header" ),
     };
 
 
@@ -118,7 +119,14 @@ function Course( courseTitle )
     {
         self.$div.find( ".course-collapse" ).click( function()
         {
-            self.ToggleExpanded( this );
+            self.ToggleExpanded();
+            self.RefreshStyle();
+            console.info( self.courseTitle + " expanded: " + self.expanded );
+        } );
+
+        self.$div.find( ".course-title" ).dblclick( function()
+        {
+            self.ToggleExpanded();
             self.RefreshStyle();
             console.info( self.courseTitle + " expanded: " + self.expanded );
         } );
@@ -145,20 +153,19 @@ function Course( courseTitle )
 
 
 
-    this.ToggleExpanded = function( div, active )
+    this.ToggleExpanded = function( active )
     {
-        var $par = null;
+        var $par = self.$div;
 
         if ( active === undefined )
         {
             self.expanded = !self.expanded;
-            self.ToggleExpanded( div, self.expanded );
+            self.ToggleExpanded( self.expanded );
         }
         else if ( active )
         {
             self.expanded = true;
-            $( div ).removeClass( "active" );
-            $par = $( div ).parents( ".course-wrap" );
+            $par.find('.course-collapse').removeClass( "active" );
             $par.find( ".class-button" ).removeClass( "class-mini" );
             $par.find( ".class-button" ).removeClass( "class-solo" );
 
@@ -167,8 +174,7 @@ function Course( courseTitle )
         else
         {
             self.expanded = false;
-            $( div ).addClass( "active" );
-            $par = $( div ).parents( ".course-wrap" );
+            $par.find('.course-collapse').addClass( "active" );
             $par.find( ".class-button:not(.active)" ).addClass( "class-mini" );
             $par.find( ".class-button.active" ).addClass( "class-solo" );
             self.RefreshStyle();

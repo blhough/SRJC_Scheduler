@@ -37,12 +37,11 @@
 </head>
 
 <body>
-    <div id="container">
-        <div id="header"><img src="img/title.png" alt="SRJC Scheduler">
+    <div id="container" class="loading">
+        <div id="header" > <div id="img-wrap"><img src="img/title.png" alt="SRJC Scheduler"></div>
 
         </div>
         <div class="spinner">
-
             <div class="spinner-container container1">
                 <div class="circle1"></div>
                 <div class="circle2"></div>
@@ -63,7 +62,7 @@
             </div>
         </div>
 
-        <div id="main" class="loading" >
+        <div id="main" >
             <div id="first-panel">
                 <div id="timesheet">
                     <div id="canvas"></div>
@@ -467,6 +466,13 @@
                     </div>
                 </div>
                 <div id="add-module">
+                    <div class='button-wrap b-help'>
+                        <div class='button'>
+
+                            <div type='text' class="button-inside active">Help</div>
+
+                        </div>
+                    </div>
                     <div class='button-wrap b-add'>
                         <div class="add-button add-collapse add-bar icon">u</div>
                         <div class='button'>
@@ -591,13 +597,13 @@
             </div>
         </div>
         <table id="tableInfo"></table>
-        <div id="footer"></div>
+        <div id="footer"> <img src="img/sig.png" alt=""></div>
     </div>
 
 </body>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" async></script> -->
 <!-- <script src="js/jquery-1.11.2.min.js"></script> -->
 
-<script src="js/main.js"></script>
+<script src="js/main.js" async></script>
 
 </html>

@@ -92,7 +92,7 @@ function Event()
     {
         self.style = NextStyle();
         self.$div = self.AddCustomElement( self.style );
-        self.BindEvents();
+        //self.BindEvents();
     };
 
     this.AddCustomElement = function( style )

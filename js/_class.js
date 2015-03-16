@@ -19,8 +19,10 @@ function Class()
     this.style = null;
     this.classDiv = null;
     this.divStyle = new DivStyle();
+    this.sessionDivs_ = [];
 
     var self = this;
+
 
     this.Init = function( courseObj )
     {
@@ -212,42 +214,85 @@ function Class()
 
 
 
-
-
-
-
-    this.DrawClass = function( refresh, divStyle )
+    this.DrawClass = function()
     {
         var sessionsLen = self.sessions_.length;
+        var sessionDivsLen = self.sessionDivs_.length;
+        var index = 0;
 
         for ( var i = 0; i < sessionsLen; i++ )
         {
-            self.DrawSession( refresh, divStyle, i );
+            for ( var j = 0; j < 7; j++ )
+            {
+                if ( self.sessions_[ i ].days_[ j ] === 1 )
+                {
+                    if ( index >= sessionDivsLen )
+                    {
+                        self.sessionDivs_.push( new SessionDiv( self.sessions_[ i ], j ) );
+                    }
+                    else
+                    {
+                        self.sessionDivs_[ index ].Update( self.sessions_[ i ], j );
+                    }
+
+                    index++;
+                }
+            }
         }
 
-        self.DrawClassConflicts();
+        self.sessionDivs_.splice( index + 1, sessionDivsLen );
+
+        srjc.canvas.DrawSessionDivs( self.sessionDivs_ );
     };
 
-    this.HideClass = function()
-    {
-        var sessionsLen = self.sessions_.length;
 
-        for ( var i = 0; i < sessionsLen; i++ )
+        this.HideClass = function()
         {
-            self.HideSession( i );
-        }
-    };
+            var sessionDivsLen = self.sessionDivs_.length;
 
-    // public //
-    this.DrawSession = function( refresh, divStyle, i )
-    {
-        self.sessions_[ i ].DrawSession( refresh, divStyle );
-    };
+            for ( var i = 0; i < sessionDivsLen; i++ )
+            {
+                self.sessionDivs_[ i ].$div.remove();
+            }
 
-    this.HideSession = function( i )
-    {
-        self.sessions_[ i ].HideSession();
-    };
+             self.sessionDivs_.splice( 0, sessionDivsLen ); // clear array
+        };
+
+
+
+
+    // this.DrawClass = function( refresh, divStyle )
+    // {
+    //     var sessionsLen = self.sessions_.length;
+
+    //     for ( var i = 0; i < sessionsLen; i++ )
+    //     {
+    //         self.DrawSession( refresh, divStyle, i );
+    //     }
+
+    //     self.DrawClassConflicts();
+    // };
+
+    // this.HideClass = function()
+    // {
+    //     var sessionsLen = self.sessions_.length;
+
+    //     for ( var i = 0; i < sessionsLen; i++ )
+    //     {
+    //         self.HideSession( i );
+    //     }
+    // };
+
+    // // public //
+    // this.DrawSession = function( refresh, divStyle, i )
+    // {
+    //     self.sessions_[ i ].DrawSession( refresh, divStyle );
+    // };
+
+    // this.HideSession = function( i )
+    // {
+    //     self.sessions_[ i ].HideSession();
+    // };
 
 
 
@@ -313,16 +358,16 @@ function Class()
             divStyle.borderColor = 'white';
             divStyle.alpha = 1;
 
-            self.parent.DrawCourse( true,
-            {
-                style:
-                {
-                    sat: 20
-                },
-                alpha: 0.3
-            } );
+            // self.parent.DrawCourse( true,
+            // {
+            //     style:
+            //     {
+            //         sat: 20
+            //     },
+            //     alpha: 0.3
+            // } );
 
-            self.DrawClass( false, divStyle );
+            self.DrawClass();
         }
         else if ( self.active )
         {
@@ -330,12 +375,12 @@ function Class()
             divStyle.borderColor = 'black';
             divStyle.alpha = 0.8;
 
-            self.parent.DrawCourse( true );
-            self.DrawClass( false );
+            //self.parent.DrawCourse( true );
+            self.DrawClass();
         }
         else
         {
-            self.parent.DrawCourse( true );
+           // self.parent.DrawCourse( true );
             self.HideClass();
         }
     };
@@ -400,17 +445,24 @@ function Class()
                     if ( self.CheckClassConflict( ds, de, ts, te, ds2, de2, ts2, te2 ) )
                     {
                         var days_ = [];
-                        days_[ i ] = 1; 
+                        days_[ i ] = 1;
 
-                        var sessionDiv = new SessionDiv( { 
-                            dateStart : Math.max( ds, ds2 ),
-                            dateEnd : Math.min( de, de2 ),
-                            timeStart : Math.max( ts, ts2 ),
-                            timeEnd : Math.min( te , te2 ),
-                            days_ : days_,
+                        var sessionDiv = new SessionDiv(
+                        {
+                            dateStart: Math.max( ds, ds2 ),
+                            dateEnd: Math.min( de, de2 ),
+                            timeStart: Math.max( ts, ts2 ),
+                            timeEnd: Math.min( te, te2 ),
+                            days_: days_,
                         } );
 
-                        srjc.canvas.DrawSession( false , sessionDiv, { style: new Style( 0 , 0 , 0 ), borderColor: 'red' , borderWidth: 3 , alpha: 0.8 } );
+                        // srjc.canvas.DrawSession( false, sessionDiv,
+                        // {
+                        //     style: new Style( 0, 0, 0 ),
+                        //     borderColor: 'red',
+                        //     borderWidth: 3,
+                        //     alpha: 0.8
+                        // } );
 
                         //DrawRect2( x1, y1, x2, y2, "red", 3, true, "hsla(0,0%,0%,.35)" );
                     }
@@ -481,4 +533,101 @@ function Class()
     };
 
 
+}
+
+
+function SessionDiv( session, day )
+{
+    var self = this;
+    var semStart, semEnd;
+
+    if ( session.dateStart < 152 )
+    {
+        semStart = SPRING_START;
+        semEnd = SPRING_END;
+    }
+    else if ( session.dateStart < 213 )
+    {
+        semStart = SUMMER_START;
+        semEnd = SUMMER_END;
+    }
+    else
+    {
+        semStart = FALL_START;
+        semEnd = FALL_END;
+    }
+
+    this.widthPre = Math.max( 2, session.dateEnd - session.dateStart ) +
+        Math.min( session.dateStart - semStart, 0 ) -
+        Math.max( session.dateEnd - semEnd, 0 );
+
+    this.xPre = Math.max( session.dateStart - semStart, 0 );
+
+    this.heightPre = session.timeEnd - session.timeStart;
+    this.semLen = ( semEnd - semStart );
+
+    this.$div = $( "<div/>",
+    {
+        class: "drawClass",
+    } ).appendTo('#canvas');
+
+
+
+    this.x = 0;
+    this.y = 0;
+    this.width = 0;
+    this.height = 0;
+    this.day = day;
+    this.current = false;
+
+    this.days_ = session.days_;
+    this.timeStart = session.timeStart;
+
+    this.divStyle = session.divStyle;
+
+    if ( session.parent !== undefined )
+    {
+        this.divStyle_ = [ session.divStyle, session.parent.divStyle, session.parent.parent.divStyle, session.parent.parent.parent.divStyle ];
+    }
+
+    this.Update = function( session, day )
+    {
+        if ( session.dateStart < 152 )
+        {
+            semStart = SPRING_START;
+            semEnd = SPRING_END;
+        }
+        else if ( session.dateStart < 213 )
+        {
+            semStart = SUMMER_START;
+            semEnd = SUMMER_END;
+        }
+        else
+        {
+            semStart = FALL_START;
+            semEnd = FALL_END;
+        }
+
+        self.widthPre = Math.max( 2, session.dateEnd - session.dateStart ) +
+            Math.min( session.dateStart - semStart, 0 ) -
+            Math.max( session.dateEnd - semEnd, 0 );
+
+        self.xPre = Math.max( session.dateStart - semStart, 0 );
+
+        self.heightPre = session.timeEnd - session.timeStart;
+        self.semLen = ( semEnd - semStart );
+
+        self.day = day;
+
+        self.days_ = session.days_;
+        self.timeStart = session.timeStart;
+
+        self.divStyle = session.divStyle;
+
+        if ( session.parent !== undefined )
+        {
+            self.divStyle_ = [ session.divStyle, session.parent.divStyle, session.parent.parent.divStyle, session.parent.parent.parent.divStyle ];
+        }
+
+    };
 }

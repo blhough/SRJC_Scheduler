@@ -1,15 +1,16 @@
-$hue-custom:120;
-$hue-add:188;
-$hue-cycle:85;
-$hue-print:216;
-$hue-restart:357;
+$hue-custom:95;
+$hue-add:95;
+$hue-cycle:45;
+$hue-print:255;
+$hue-restart:3;
 $hue-semester:23;
-$sat:60%;
-$sat-hover:50%;
-$sat-press:70%;
-$light:60%;
-$light-hover:70%;
-$light-press:50%;
+$hue-help:180;
+$sat:65%;
+$sat-hover:90%;
+$sat-press:65%;
+$light:75%;
+$light-hover:60%;
+$light-press:52%;
 .button-inside {
     cursor: pointer;
     box-sizing: border-box;
@@ -133,7 +134,7 @@ border-bottom-right-radius:2px;
 }
 
 .b-semester .button .button-inside {
-    background-color: hsl($hue-semester, $sat - 25, $light + 25);
+    background-color: hsl($hue-semester, $sat - 25, $light + 10);
     &:hover {
         background-color: hsl($hue-semester, $sat-hover - 25, $light-hover + 25);
     }
@@ -145,3 +146,12 @@ border-bottom-right-radius:2px;
     }
 }
 
+.b-help .button .button-inside {
+    background-color: hsl($hue-help, $sat, $light);
+    &:hover {
+        background-color: hsl($hue-help, $sat-hover, $light-hover);
+    }
+    &:active {
+        background-color: hsl($hue-help, $sat-press, $light-press);
+    }
+}

@@ -35,7 +35,7 @@ function SRJC()
         self.print.Init();
     };
 
-    $( '.b-restart>div>div' ).click( function()
+    $( '#footer' ).click( function()
     {
         var temp_ = [ "<4336―MW┃MW―9:00 am - 10:30 am┃12:00 pm - 3:00 pm―Omrcen T┃Omrcen T―1999┃1948―5.00―Restricted―2―01/12-05/13┃01/12-05/13―5/20/2015―>","<4337―MW┃TTh―9:00 am - 10:30 am┃7:30 am - 10:30 am―Omrcen T┃Omrcen T―1999┃1948―5.00―Open―9―01/12-05/14┃01/12-05/14―5/20/2015―>","<4338―MW┃TTh―9:00 am - 10:30 am┃12:00 pm - 3:00 pm―Omrcen T┃Omrcen T―1999┃1948―5.00―Restricted―4―01/12-05/14┃01/12-05/14―5/20/2015―>" ];
         self.schedule.AddCourse( temp_, "MATH 2", 1 );
@@ -51,11 +51,11 @@ var srjc = new SRJC();
 
 $( function() // document has been loaded
     {
-        // setTimeout( function()
-        // {
-        //     srjc.Init();
-        // }, 1 );
-         srjc.Init();
+    setTimeout( function()
+    {
+        srjc.Init();
+    }, 200 );
+         //srjc.Init();
     } );
 
 
@@ -119,3 +119,6 @@ var printObj = typeof JSON !== "undefined" ? JSON.stringify : function( obj ) {
   });
   return "{ " +  arr.join( ", " ) + " }";
 };
+
+
+
